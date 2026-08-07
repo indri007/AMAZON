@@ -1,6 +1,8 @@
 # langflow-bob
 
-Integrasi **Langflow Vector Store RAG** dengan **IBM Bob** menggunakan MCP (Model Context Protocol).
+Integrasi **Langflow Vector Store RAG** dengan **IBM Bob** menggunakan MCP (Model Context Protocol) — dideploy di **Google Cloud Run** dan diakses via **Streamlit Cloud**.
+
+[![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://indri007-langflow-bob.streamlit.app)
 
 ---
 
@@ -8,7 +10,18 @@ Integrasi **Langflow Vector Store RAG** dengan **IBM Bob** menggunakan MCP (Mode
 
 Project ini menghubungkan IBM Bob (AI coding assistant) dengan Langflow sebagai backend RAG (*Retrieval-Augmented Generation*). Langflow mengelola pipeline pencarian dokumen berbasis vector store, sementara Bob mengakses pipeline tersebut sebagai tool melalui protokol MCP.
 
-**Use case utama:** tanya-jawab berbasis dokumen — upload dokumen → disimpan sebagai vektor embedding → Bob bisa retrieve dan menjawab pertanyaan berdasarkan isi dokumen tersebut.
+**Use case utama:** Chatbot HRD Virtual — dokumen kebijakan HRD di-ingest ke vector store → user bisa tanya-jawab seputar HRD melalui Streamlit app atau IBM Bob.
+
+---
+
+## 🔗 Live Links
+
+| Layanan | URL |
+|---------|-----|
+| **Streamlit App (HRD Chatbot)** | https://indri007-langflow-bob.streamlit.app |
+| **Langflow Cloud Run** | https://langflow-192433070716.asia-southeast2.run.app |
+| **GitHub Repo** | https://github.com/indri007/langflow-bob |
+| **Google AI Studio** | https://aistudio.google.com/app/apikey |
 
 ---
 
@@ -30,6 +43,7 @@ langflow-bob/
 │       └── agent6_evaluator.md
 ├── .bob/
 │   └── mcp.json                    # Konfigurasi MCP untuk IBM Bob
+├── streamlit_app.py                # Streamlit HRD Chatbot app
 └── README.md
 ```
 
@@ -38,24 +52,37 @@ langflow-bob/
 ## 🏗️ Arsitektur
 
 ```
-User
- │
- ▼
-IBM Bob (MCP Client)
- │  uvx mcp-proxy@0.9.0 (stdio → streamable HTTP)
- │  x-api-key: <langflow-api-key>
- ▼
-Langflow MCP Endpoint
-(localhost:7862)
- │
- ▼
+User (Browser)
+     │
+     ▼
+Streamlit Cloud App
+(indri007-langflow-bob.streamlit.app)
+     │  HTTP POST /api/v1/run/{flow_id}
+     │  x-api-key: sk-xxx
+     ▼
+Langflow — Google Cloud Run
+(langflow-192433070716.asia-southeast2.run.app)
+     │
+     ▼
 Vector Store RAG Flow
  ├── Knowledge (Ingest / Retrieve)
- ├── Embedding Model (gemini-embedding-2, 3072 dimensi)
+ ├── Embedding Model (gemini-embedding-2, 3072 dim)
  ├── Agent (gemini-2.0-flash-lite)
  ├── Prompt Template
  ├── Parser
  └── Chat Output
+
+──────────── ATAU via IBM Bob ────────────
+
+IBM Bob (MCP Client)
+     │  uvx mcp-proxy@0.9.0
+     │  streamable HTTP + x-api-key
+     ▼
+Langflow MCP Endpoint
+/api/v1/mcp/project/{project_id}/streamable
+     │
+     ▼
+Tool: vector_store_rag
 ```
 
 ---
@@ -64,24 +91,24 @@ Vector Store RAG Flow
 
 | Komponen | Detail |
 |----------|--------|
-| **Langflow** | v1.11.2 — platform visual untuk pipeline AI |
+| **Langflow** | v1.11.2 |
+| **Deploy** | Google Cloud Run (`asia-southeast2`) |
 | **LLM Agent** | Google Gemini 2.0 Flash Lite |
-| **Embedding Model** | `gemini-embedding-2` (Google Generative AI) |
-| **Dimensi Embedding** | **3072** (`output_dimensionality`) |
+| **Embedding Model** | `gemini-embedding-2` (3072 dimensi) |
 | **Vector Store** | Langflow Knowledge component |
+| **Frontend** | Streamlit (Streamlit Cloud) |
 | **MCP Proxy** | `mcp-proxy@0.9.0` via `uvx` |
 | **MCP Transport** | Streamable HTTP |
 | **MCP Client** | IBM Bob |
-| **Port** | `7862` |
 
 ---
 
-## 🔄 PRD Workflow Langflow
+## 🔄 PRD Workflow
 
-### 1. Fase Ingest (Simpan Dokumen)
+### 1. Fase Ingest (Simpan Dokumen HRD)
 
 ```
-Dokumen/Teks
+Dokumen HRD (FAQ, SOP, Kebijakan)
      │
      ▼
 [Knowledge — mode: Ingest]
@@ -92,17 +119,17 @@ gemini-embedding-2
 output_dimensionality: 3072
      │
      ▼
-Vector Store (tersimpan)
+Vector Store (tersimpan di Langflow Cloud Run)
 ```
 
-**Tujuan:** Mengubah dokumen menjadi vektor embedding 3072 dimensi dan menyimpannya ke vector store internal Langflow.
+**Tujuan:** Mengubah dokumen HRD menjadi vektor embedding 3072 dimensi dan menyimpannya ke vector store Langflow Cloud Run.
 
 ---
 
-### 2. Fase Retrieve + Generate (Tanya Jawab)
+### 2. Fase Retrieve + Generate (Tanya Jawab HRD)
 
 ```
-User Question (Chat Input)
+User Question (Streamlit / IBM Bob)
      │
      ├──────────────────────────┐
      ▼                          ▼
@@ -116,39 +143,45 @@ User Question (Chat Input)
                ▼
           [Prompt]
   "You are a retrieval-augmented
-   assistant..." + context + question
+   HRD assistant..." + context + question
                │
                ▼
            [Agent]
     gemini-2.0-flash-lite
-    + MCP Tools (vector_store_rag)
                │
                ▼
          [Chat Output]
 ```
 
-**Tujuan:** Menerima pertanyaan, mencari dokumen relevan di vector store, menyusun prompt dengan konteks, lalu menghasilkan jawaban via LLM.
-
 ---
 
-### 3. Akses via MCP (IBM Bob)
+### 3. Akses via Streamlit Cloud
 
 ```
-IBM Bob
-  │  stdio
-  ▼
-uvx mcp-proxy@0.9.0
-  │  streamable HTTP + x-api-key
-  ▼
-Langflow MCP Endpoint
-/api/v1/mcp/project/{project_id}/streamable
-  │
-  ▼
-Tool: vector_store_rag
-(menjalankan flow Retrieve + Generate)
+User → Streamlit Cloud App
+          │  POST /api/v1/run/{flow_id}
+          │  x-api-key: sk-Jly1LDqkcEj-...
+          ▼
+     Langflow Cloud Run
+     langflow-192433070716.asia-southeast2.run.app
 ```
 
-**Tujuan:** Bob dapat memanggil flow RAG sebagai tool MCP, sehingga bisa menjawab pertanyaan berbasis dokumen langsung dari dalam chat Bob.
+### 4. Akses via IBM Bob (MCP)
+
+```
+IBM Bob → uvx mcp-proxy@0.9.0
+          │  streamable HTTP
+          │  x-api-key: sk-DlkWQSf...
+          ▼
+     Langflow MCP Endpoint (lokal)
+     localhost:7862/api/v1/mcp/project/05688c3b.../streamable
+
+     — ATAU —
+
+     Langflow MCP Endpoint (Cloud Run)
+     langflow-192433070716.asia-southeast2.run.app
+     /api/v1/mcp/project/a2a1a234.../streamable
+```
 
 ---
 
@@ -156,47 +189,77 @@ Tool: vector_store_rag
 
 ### Prasyarat
 
-- [Langflow](https://langflow.org) v1.11.2 berjalan di `localhost:7862`
 - [IBM Bob](https://www.ibm.com/products/bob) terinstall
-- [uv / uvx](https://docs.astral.sh/uv/getting-started/installation/) v0.11+ terinstall
-- Google API Key (Gemini)
+- [uv / uvx](https://docs.astral.sh/uv/getting-started/installation/) v0.11+
+- Google API Key dari [Google AI Studio](https://aistudio.google.com/app/apikey)
 
 ```bash
-# Cek uvx tersedia
-uvx --version
-
-# Pastikan mcp-proxy versi 0.9.0 bisa jalan
-uvx mcp-proxy@0.9.0 --version
+uvx --version          # cek uvx
+uvx mcp-proxy@0.9.0 --version  # pastikan mcp-proxy 0.9.0 bisa jalan
 ```
 
-### 1. Import Flow ke Langflow
+---
 
-1. Buka Langflow di `http://localhost:7862`
-2. Klik **Import** di halaman Projects
-3. Upload file `langflow/Vector Store RAG.json`
-4. Pastikan field **Dimensions** di komponen **Embedding Model** bernilai `3072`
+### Opsi A: Pakai Langflow Cloud Run (Recommended)
 
-### 2. Setup API Key Google (Gemini)
+Langflow sudah berjalan di Cloud Run — tidak perlu install lokal.
 
-1. Buat API key di [Google AI Studio](https://aistudio.google.com/app/apikey)
-2. Di Langflow, buka **Settings → Global Variables**
-3. Tambahkan variable `GOOGLE_API_KEY` dengan value API key kamu
-4. Komponen **Agent** dan **Embedding Model** akan otomatis menggunakan variable ini
+**1. Set Global Variable di Langflow Cloud Run**
 
-> ⚠️ **Jangan** simpan API key langsung di file flow atau commit ke git.
+Buka https://langflow-192433070716.asia-southeast2.run.app → **Settings → Global Variables** → tambah:
+- Name: `GOOGLE_API_KEY`
+- Value: API key dari Google AI Studio
 
-### 3. Buat Langflow API Key
+**2. Aktifkan MCP di IBM Bob**
 
-Langflow v1.5+ memerlukan API key untuk akses endpoint MCP:
+Edit `.bob/mcp.json`:
 
-1. Buka `http://localhost:7862`
-2. Klik **ikon profil** (kanan atas) → **Settings → API Keys**
-3. Klik **+ Add New** → beri nama (misal: `bob-mcp`)
-4. Copy API key yang muncul (format: `sk-xxxx...`)
+```json
+{
+  "mcpServers": {
+    "lf-cloudrun": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy@0.9.0",
+        "--transport",
+        "streamablehttp",
+        "--header",
+        "x-api-key:<LANGFLOW_API_KEY_CLOUD_RUN>",
+        "https://langflow-192433070716.asia-southeast2.run.app/api/v1/mcp/project/a2a1a234-0b47-4007-a4e7-1d8fec7b3ebf/streamable"
+      ]
+    }
+  }
+}
+```
 
-### 4. Aktifkan MCP di IBM Bob
+**3. Ingest Dokumen HRD**
 
-File `.bob/mcp.json` sudah tersedia di repo ini dengan konfigurasi:
+Buka https://langflow-192433070716.asia-southeast2.run.app → flow **Vector Store RAG** → Knowledge → mode **Ingest** → upload dokumen dari folder `hrd-docs/`.
+
+---
+
+### Opsi B: Jalankan Langflow Lokal
+
+**1. Install & jalankan Langflow**
+
+```bash
+pip install langflow
+langflow run --port 7862
+```
+
+**2. Import flow**
+
+Buka `http://localhost:7862` → Import → upload `langflow/Vector Store RAG.json`
+
+**3. Set API Key Google**
+
+Langflow → **Settings → Global Variables** → tambah `GOOGLE_API_KEY`
+
+**4. Buat Langflow API Key**
+
+Langflow → **profil → Settings → API Keys → + Add New** → copy key (`sk-xxxx...`)
+
+**5. Aktifkan MCP di IBM Bob**
 
 ```json
 {
@@ -216,49 +279,52 @@ File `.bob/mcp.json` sudah tersedia di repo ini dengan konfigurasi:
 }
 ```
 
-> ⚠️ Ganti `<LANGFLOW_API_KEY>` dengan API key Langflow dari langkah sebelumnya.  
-> ⚠️ `project_id` (`05688c3b-...`) adalah ID project spesifik. Sesuaikan jika menggunakan instalasi Langflow yang berbeda.
+---
 
-### 5. Ingest Dokumen
+### Deploy Streamlit App
 
-1. Buka flow **Vector Store RAG** di Langflow
-2. Set komponen **Knowledge** ke mode **Ingest**
-3. Upload atau masukkan dokumen yang ingin di-index
-4. Jalankan flow untuk menyimpan embedding ke vector store
+**1. Fork/clone repo ini ke GitHub**
 
-### 6. Test via Bob
+**2. Buka [share.streamlit.io](https://share.streamlit.io) → New App → pilih repo ini**
 
-Setelah semua berjalan, Bob akan memiliki tool `vector_store_rag`. Coba tanya di Bob:
+**3. Set Secrets** (Settings → Secrets):
 
-> *"Cari informasi tentang [topik dari dokumen kamu]"*
+```toml
+LANGFLOW_URL = "https://langflow-192433070716.asia-southeast2.run.app"
+FLOW_ID = "d8eedd75-92a7-47f0-974a-b74c0062ea23"
+LANGFLOW_API_KEY = "<LANGFLOW_API_KEY_CLOUD_RUN>"
+```
 
 ---
 
 ## 🩺 Troubleshooting
 
 ### Error: `cannot import name 'request_ctx'`
-Versi `mcp-proxy` terbaru tidak kompatibel dengan `mcp` SDK terbaru.  
-**Solusi:** Gunakan `mcp-proxy@0.9.0` (sudah dikonfigurasi di `.bob/mcp.json`).
+Versi `mcp-proxy` terbaru tidak kompatibel.
+**Solusi:** Gunakan `mcp-proxy@0.9.0`.
 
-### Error: `401 Unauthorized` / `No authentication credentials provided`
-Langflow v1.5+ memerlukan API key.  
-**Solusi:** Pastikan `--header x-api-key:<key>` sudah ada di config MCP.
+### Error: `401 Unauthorized`
+Langflow v1.5+ wajib API key.
+**Solusi:** Pastikan `--header x-api-key:<key>` ada di config MCP.
 
-### Error: `404 Not Found` pada endpoint A2A
-Flow belum di-enable sebagai A2A agent.  
-**Solusi:** Buka flow di Langflow → Settings → aktifkan **"Enable A2A"**.
+### Error: `❌ Tidak dapat terhubung ke Langflow`
+Langflow tidak bisa diakses dari Streamlit Cloud jika pakai `localhost`.
+**Solusi:** Gunakan URL Cloud Run sebagai `LANGFLOW_URL`.
 
 ### MCP tidak terhubung setelah update config
-**Solusi:** Reload window Bob: `Cmd+Shift+P` → **Reload Window**.
+**Solusi:** Reload Bob: `Cmd+Shift+P` → **Reload Window**.
+
+### Cold start Cloud Run lambat
+**Solusi:** Set minimum instances = 1 di Cloud Run console.
 
 ---
 
 ## ⚠️ Catatan Penting
 
-- **Konsistensi dimensi:** Pastikan dimensi embedding **selalu 3072** baik saat Ingest maupun Retrieve. Jika sudah ada data lama dengan dimensi berbeda, hapus vector store dan ingest ulang.
-- **mcp-proxy versi:** Gunakan `mcp-proxy@0.9.0` — versi lebih baru saat ini tidak kompatibel.
-- **Secrets:** Jangan commit API key (Langflow maupun Google) ke repo.
-- **Port:** Langflow berjalan di port `7862` (bukan default `7860`).
+- **Dimensi embedding:** Selalu **3072** baik Ingest maupun Retrieve. Jika beda, hapus vector store dan ingest ulang.
+- **mcp-proxy:** Gunakan `mcp-proxy@0.9.0` — versi lebih baru tidak kompatibel saat ini.
+- **Secrets:** Jangan commit API key ke repo (Langflow maupun Google).
+- **Cloud Run cold start:** Langflow bisa lambat ~30 detik setelah idle. Set min-instances=1 untuk produksi.
 
 ---
 
