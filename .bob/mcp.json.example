@@ -1,0 +1,26 @@
+{
+  "mcpServers": {
+    "lf-vector-store-rag": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy@0.9.0",
+        "--transport",
+        "streamablehttp",
+        "--header",
+        "x-api-key:<LANGFLOW_API_KEY_LOCAL>",
+        "http://localhost:7862/api/v1/mcp/project/05688c3b-4f2e-4b3e-995d-933594bd00c3/streamable"
+      ]
+    },
+    "lf-cloudrun": {
+      "command": "uvx",
+      "args": [
+        "mcp-proxy@0.9.0",
+        "--transport",
+        "streamablehttp",
+        "--header",
+        "x-api-key:<LANGFLOW_API_KEY_CLOUDRUN>",
+        "https://langflow-192433070716.asia-southeast2.run.app/api/v1/mcp/project/a2a1a234-0b47-4007-a4e7-1d8fec7b3ebf/streamable"
+      ]
+    }
+  }
+}

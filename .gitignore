@@ -1,0 +1,42 @@
+# Environment variables & secrets
+.env
+.env.local
+.env.production
+secrets.toml
+.streamlit/secrets.toml
+
+# API Keys — jangan pernah commit
+.bob/mcp.json
+
+# Tapi izinkan file example/template
+!.env.example
+!.bob/mcp.json.example
+
+# Python
+__pycache__/
+*.py[cod]
+*.pyo
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+
+# macOS
+.DS_Store
+.AppleDouble
+.LSOverride
+
+# Node
+node_modules/
+
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Langflow
+*.db
+langflow.db
