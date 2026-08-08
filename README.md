@@ -207,8 +207,12 @@ Langflow sudah berjalan di Cloud Run — tidak perlu install lokal.
 **1. Set Global Variable di Langflow Cloud Run**
 
 Buka https://langflow-192433070716.asia-southeast2.run.app → **Settings → Global Variables** → tambah:
-- Name: `GOOGLE_API_KEY`
+- Name: `GEMINI_API_KEY`
 - Value: API key dari Google AI Studio
+
+> ⚠️ Catatan: Saat ini setup ini belum memverifikasi persistence vector store/database secara eksplisit di Cloud Run. Jika kamu ingin vector store yang tahan restart, kamu harus mengkonfigurasi backend persistent seperti Chroma dengan penyimpanan eksternal atau storage yang didukung Cloud Run.
+>
+> Lihat `PERSISTENCE_PLAN.md` untuk opsi produksi dan rekomendasi implementasi.
 
 **2. Aktifkan MCP di IBM Bob**
 
@@ -238,6 +242,36 @@ Buka https://langflow-192433070716.asia-southeast2.run.app → flow **Vector Sto
 
 ---
 
+### Opsi C: Jalankan Chroma Lokal untuk Dokumentasi HRD
+
+Jika kamu ingin menyimpan dokumen HRD secara lokal tanpa Cloud Run, gunakan `chroma_tool.py`.
+
+**1. Install dependensi tambahan**
+
+```bash
+pip install chromadb sentence-transformers
+```
+
+**2. Ingest dokumen HRD**
+
+```bash
+python chroma_tool.py ingest --docs hrd-docs
+```
+
+**3. Query koleksi lokal**
+
+```bash
+python chroma_tool.py query "Apa itu KPI?"
+```
+
+**4. Hasil dan persistence**
+
+Data disimpan di direktori `.chromadb/`. Jangan commit direktori ini.
+
+> Catatan: ini adalah opsi lokal untuk eksperimen dan debugging; jika kamu ingin tetap menggunakan Langflow Cloud Run, lanjutkan di opsi A.
+
+---
+
 ### Opsi B: Jalankan Langflow Lokal
 
 **1. Install & jalankan Langflow**
@@ -251,9 +285,9 @@ langflow run --port 7862
 
 Buka `http://localhost:7862` → Import → upload `langflow/Vector Store RAG.json`
 
-**3. Set API Key Google**
+**3. Set API Key Gemini**
 
-Langflow → **Settings → Global Variables** → tambah `GOOGLE_API_KEY`
+Langflow → **Settings → Global Variables** → tambah `GEMINI_API_KEY`
 
 **4. Buat Langflow API Key**
 
