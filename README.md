@@ -22,6 +22,7 @@ Project ini menghubungkan IBM Bob (AI coding assistant) dengan Langflow sebagai 
 | **Langflow Cloud Run** | https://langflow-192433070716.asia-southeast2.run.app |
 | **GitHub Repo** | https://github.com/indri007/langflow-bob |
 | **ERD Diagram** | ERD.md |
+| **Rules** | rules.md |
 
 ---
 
