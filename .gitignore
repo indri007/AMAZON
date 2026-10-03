@@ -45,4 +45,17 @@ langflow.db
 # Binaries & Eval
 audit_asm
 check_solve_asm
+test_angsuran
 .venv-eval/
+
+# Cloned External Repositories & Datasets
+Awesome-Attendance-Management/
+School-Management-System/
+Sistem-Informasi-Akademik-Sekolah-Laravel/
+Sistem-Informasi-Sekolah/
+chatbot-id/
+consolidated_receipt_dataset/
+datasets/
+remind_kas/
+school-managment-software/
+student-school-attendance/
