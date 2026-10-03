@@ -44,4 +44,5 @@ langflow.db
 
 # Binaries & Eval
 audit_asm
+check_solve_asm
 .venv-eval/
