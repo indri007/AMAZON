@@ -1,0 +1,77 @@
+{
+  "metrics": {
+    "faithfulness": 0.88,
+    "answer_relevancy": 0.86,
+    "context_precision": 0.84,
+    "context_recall": 0.82,
+    "bert_score_f1": 0.81,
+    "pii_leak_count": 0.0,
+    "vector_mrr": 0.8,
+    "bm25_mrr": 0.65,
+    "p_value": 0.024
+  },
+  "bit_audit": {
+    "bit_register": "11111111",
+    "hex_register": "0xFF",
+    "pass_count": 8,
+    "percentage": 100.0,
+    "details": [
+      {
+        "bit": 0,
+        "name": "Bit 0: Faithfulness (RAGAS)",
+        "score": 0.88,
+        "target": 0.85,
+        "val": 1
+      },
+      {
+        "bit": 1,
+        "name": "Bit 1: Answer Relevancy (RAGAS)",
+        "score": 0.86,
+        "target": 0.8,
+        "val": 1
+      },
+      {
+        "bit": 2,
+        "name": "Bit 2: Context Precision (RAGAS)",
+        "score": 0.84,
+        "target": 0.8,
+        "val": 1
+      },
+      {
+        "bit": 3,
+        "name": "Bit 3: Context Recall (RAGAS)",
+        "score": 0.82,
+        "target": 0.8,
+        "val": 1
+      },
+      {
+        "bit": 4,
+        "name": "Bit 4: Semantic Similarity (BERTScore F1)",
+        "score": 0.81,
+        "target": 0.75,
+        "val": 1
+      },
+      {
+        "bit": 5,
+        "name": "Bit 5: Privacy Guard (Zero PII Leak)",
+        "score": 0.0,
+        "target": 0.0,
+        "val": 1
+      },
+      {
+        "bit": 6,
+        "name": "Bit 6: Retrieval Superiority (Vector MRR > BM25 MRR)",
+        "score": 0.15000000000000002,
+        "target": "> 0.0",
+        "val": 1
+      },
+      {
+        "bit": 7,
+        "name": "Bit 7: Statistical Significance (p-value < 0.05)",
+        "score": 0.024,
+        "target": "< 0.05",
+        "val": 1
+      }
+    ]
+  }
+}

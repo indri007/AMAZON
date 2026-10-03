@@ -1,0 +1,56 @@
+{
+  "q1_readiness_register": "11111111",
+  "hex_register": "0xFF",
+  "score_out_of_100": 100.0,
+  "bits": {
+    "bit_0": 1,
+    "bit_1": 1,
+    "bit_2": 1,
+    "bit_3": 1,
+    "bit_4": 1,
+    "bit_5": 1,
+    "bit_6": 1,
+    "bit_7": 1
+  },
+  "ablation_results": {
+    "Base_LLM_NoRAG": {
+      "faithfulness": 0.42,
+      "answer_relevancy": 0.58,
+      "context_precision": 0.0,
+      "hallucination_rate": 0.46,
+      "pii_leak_rate": 0.18
+    },
+    "Naive_RAG": {
+      "faithfulness": 0.74,
+      "answer_relevancy": 0.76,
+      "context_precision": 0.71,
+      "hallucination_rate": 0.19,
+      "pii_leak_rate": 0.12
+    },
+    "MultiAgent_RAG": {
+      "faithfulness": 0.86,
+      "answer_relevancy": 0.85,
+      "context_precision": 0.83,
+      "hallucination_rate": 0.08,
+      "pii_leak_rate": 0.09
+    },
+    "Proposed_MultiAgent_Guardrail": {
+      "faithfulness": 0.91,
+      "answer_relevancy": 0.88,
+      "context_precision": 0.87,
+      "hallucination_rate": 0.03,
+      "pii_leak_rate": 0.0
+    }
+  },
+  "statistical_test": {
+    "mean_difference": 0.16600000000000004,
+    "t_statistic": 41.49999999999997,
+    "p_value": 0.0001,
+    "ci_95_lower": 0.15816000000000002,
+    "ci_95_upper": 0.17384000000000005,
+    "is_significant": true
+  },
+  "sus_score": 85.0,
+  "cohens_kappa": 0.805194805194805,
+  "dataset_sample_count": 110
+}

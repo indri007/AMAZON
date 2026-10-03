@@ -1,0 +1,112 @@
+[
+  {
+    "question": "Berapa hari cuti tahunan yang dimiliki karyawan?",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimana cara mengajukan cuti tahunan?",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Apakah cuti tahunan bisa diakumulasi ke tahun berikutnya?",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimana prosedur cuti sakit?",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimana proses rekrutmen karyawan baru?",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Berapa lama masa percobaan karyawan baru?",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Apa saja yang dinilai saat evaluasi masa percobaan?",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimana proses penerimaan sebagai karyawan tetap?",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimana cara mengajukan training?",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Apa saja jenis training yang tersedia?",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Bagaimana evaluasi efektivitas training?",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Bagaimana sistem performance appraisal di perusahaan?",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Apa itu KPI dan bagaimana cara menetapkannya?",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Bagaimana cara memantau pencapaian KPI?",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Apa saja komponen gaji karyawan?",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimana sistem kenaikan gaji di perusahaan?",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimana cara mengajukan klaim BPJS?",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Apakah ada bonus karyawan?",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimana proses promosi jabatan?",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Apa syarat untuk bisa dipromosikan?",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Apa itu salary grading?",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Apa itu Assessment Center?",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi"
+  }
+]

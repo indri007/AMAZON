@@ -41,3 +41,7 @@ node_modules/
 *.db
 langflow.db
 .chromadb/
+
+# Binaries & Eval
+audit_asm
+.venv-eval/

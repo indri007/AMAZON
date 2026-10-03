@@ -1,0 +1,640 @@
+[
+  {
+    "question": "Berapa hari cuti tahunan yang dimiliki karyawan?",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai hari cuti tahunan yang dimiliki karyawan di kantor?",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait hari cuti tahunan yang dimiliki karyawan berdasarkan SOP SDM.",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang hari cuti tahunan yang dimiliki karyawan?",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai hari cuti tahunan yang dimiliki karyawan?",
+    "ground_truth": "Karyawan tetap mendapatkan 12 hari cuti tahunan setelah masa kerja 1 tahun penuh.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana cara mengajukan cuti tahunan?",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai cara mengajukan cuti tahunan di kantor?",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait cara mengajukan cuti tahunan berdasarkan SOP SDM.",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang cara mengajukan cuti tahunan?",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai cara mengajukan cuti tahunan?",
+    "ground_truth": "Isi Form Pengajuan Cuti (Form 1 - Perencanaan SDM), ajukan minimal 3 hari kerja sebelum tanggal cuti, dan dapatkan persetujuan dari atasan langsung.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apakah cuti tahunan bisa diakumulasi ke tahun berikutnya?",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai kah cuti tahunan bisa diakumulasi ke tahun berikutnya di kantor?",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait kah cuti tahunan bisa diakumulasi ke tahun berikutnya berdasarkan SOP SDM.",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang kah cuti tahunan bisa diakumulasi ke tahun berikutnya?",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai kah cuti tahunan bisa diakumulasi ke tahun berikutnya?",
+    "ground_truth": "Cuti tahunan yang tidak diambil tidak dapat diakumulasi ke tahun berikutnya kecuali ada kebijakan khusus dari manajemen.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana prosedur cuti sakit?",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai prosedur cuti sakit di kantor?",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait prosedur cuti sakit berdasarkan SOP SDM.",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang prosedur cuti sakit?",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai prosedur cuti sakit?",
+    "ground_truth": "Karyawan wajib memberitahu atasan dan HRD di hari pertama sakit. Cuti sakit lebih dari 2 hari memerlukan surat keterangan dokter.",
+    "category": "Cuti & Izin",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana proses rekrutmen karyawan baru?",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai proses rekrutmen karyawan baru di kantor?",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait proses rekrutmen karyawan baru berdasarkan SOP SDM.",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang proses rekrutmen karyawan baru?",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai proses rekrutmen karyawan baru?",
+    "ground_truth": "Proses rekrutmen mengikuti SOP SDM: (1) Perencanaan kebutuhan SDM, (2) Posting lowongan, (3) Seleksi CV, (4) Wawancara, (5) Assessment, (6) Offering, (7) Onboarding.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Berapa lama masa percobaan karyawan baru?",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai lama masa percobaan karyawan baru di kantor?",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait lama masa percobaan karyawan baru berdasarkan SOP SDM.",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang lama masa percobaan karyawan baru?",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai lama masa percobaan karyawan baru?",
+    "ground_truth": "Masa percobaan (probation) adalah 3 bulan, dapat diperpanjang maksimal 3 bulan berikutnya berdasarkan evaluasi kinerja menggunakan Form Evaluasi Masa Percobaan.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa saja yang dinilai saat evaluasi masa percobaan?",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai saja yang dinilai saat evaluasi masa percobaan di kantor?",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait saja yang dinilai saat evaluasi masa percobaan berdasarkan SOP SDM.",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang saja yang dinilai saat evaluasi masa percobaan?",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai saja yang dinilai saat evaluasi masa percobaan?",
+    "ground_truth": "Evaluasi mencakup: kehadiran, kemampuan teknis, adaptasi budaya perusahaan, inisiatif, dan kerjasama tim (Form 5 - Evaluasi Masa Percobaan).",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana proses penerimaan sebagai karyawan tetap?",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai proses penerimaan sebagai karyawan tetap di kantor?",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait proses penerimaan sebagai karyawan tetap berdasarkan SOP SDM.",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang proses penerimaan sebagai karyawan tetap?",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai proses penerimaan sebagai karyawan tetap?",
+    "ground_truth": "Setelah lulus evaluasi masa percobaan, karyawan mengisi Form Penerimaan Karyawan Permanen dan menandatangani kontrak kerja tetap.",
+    "category": "Rekrutmen & Onboarding",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana cara mengajukan training?",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai cara mengajukan training di kantor?",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait cara mengajukan training berdasarkan SOP SDM.",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang cara mengajukan training?",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai cara mengajukan training?",
+    "ground_truth": "Isi Form Usulan Training (Form 7), ajukan ke atasan dan HRD. Training akan dimasukkan ke Matriks Training Plan sesuai kebutuhan jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa saja jenis training yang tersedia?",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai saja jenis training yang tersedia di kantor?",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait saja jenis training yang tersedia berdasarkan SOP SDM.",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang saja jenis training yang tersedia?",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai saja jenis training yang tersedia?",
+    "ground_truth": "Training dibagi menjadi: (1) Soft Skills Training (komunikasi, kepemimpinan, teamwork), (2) Functional Training per bidang (HR, IT, Finance, Marketing, GA, Audit), (3) Mandatory Training sesuai level jabatan.",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana evaluasi efektivitas training?",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai evaluasi efektivitas training di kantor?",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait evaluasi efektivitas training berdasarkan SOP SDM.",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang evaluasi efektivitas training?",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai evaluasi efektivitas training?",
+    "ground_truth": "Evaluasi dilakukan melalui: Form Kepuasan Peserta (Form 9), Form Tingkat Pemahaman Materi (Form 10), Form Rencana Penerapan Materi (Form 11), dan Form Perbandingan Kinerja Sebelum-Sesudah Training (Form 12).",
+    "category": "Pelatihan & Pengembangan",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana sistem performance appraisal di perusahaan?",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai sistem performance appraisal di perusahaan di kantor?",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait sistem performance appraisal di perusahaan berdasarkan SOP SDM.",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang sistem performance appraisal di perusahaan?",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai sistem performance appraisal di perusahaan?",
+    "ground_truth": "Performance appraisal dilakukan berbasis KPI menggunakan Form Performance Appraisal (Form 13). Penilaian dilakukan secara periodik (biasanya 2x setahun: mid-year dan year-end review).",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa itu KPI dan bagaimana cara menetapkannya?",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai itu KPI dan bagaimana cara menetapkannya di kantor?",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait itu KPI dan bagaimana cara menetapkannya berdasarkan SOP SDM.",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang itu KPI dan bagaimana cara menetapkannya?",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai itu KPI dan bagaimana cara menetapkannya?",
+    "ground_truth": "KPI (Key Performance Indicator) adalah indikator terukur untuk menilai pencapaian target kerja. Penetapan KPI menggunakan Katalog KPI yang disesuaikan dengan fungsi dan level jabatan masing-masing karyawan.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana cara memantau pencapaian KPI?",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai cara memantau pencapaian KPI di kantor?",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait cara memantau pencapaian KPI berdasarkan SOP SDM.",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang cara memantau pencapaian KPI?",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai cara memantau pencapaian KPI?",
+    "ground_truth": "Pemantauan KPI dilakukan secara berkala menggunakan Form Pemantauan KPI (Form 14) yang diisi bersama atasan langsung setiap bulan/kuartal.",
+    "category": "Kinerja & KPI",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa saja komponen gaji karyawan?",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai saja komponen gaji karyawan di kantor?",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait saja komponen gaji karyawan berdasarkan SOP SDM.",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang saja komponen gaji karyawan?",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai saja komponen gaji karyawan?",
+    "ground_truth": "Komponen gaji terdiri dari: gaji pokok, tunjangan jabatan, tunjangan transport, tunjangan makan, dan benefit lainnya sesuai grade jabatan (lihat Tabel Salary Grade).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana sistem kenaikan gaji di perusahaan?",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai sistem kenaikan gaji di perusahaan di kantor?",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait sistem kenaikan gaji di perusahaan berdasarkan SOP SDM.",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang sistem kenaikan gaji di perusahaan?",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai sistem kenaikan gaji di perusahaan?",
+    "ground_truth": "Kenaikan gaji diusulkan menggunakan Form Pemberian Kenaikan Gaji (Form 15), berdasarkan hasil performance appraisal dan masa kerja. Kenaikan gaji dilakukan minimal 1x setahun.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana cara mengajukan klaim BPJS?",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai cara mengajukan klaim BPJS di kantor?",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait cara mengajukan klaim BPJS berdasarkan SOP SDM.",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang cara mengajukan klaim BPJS?",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai cara mengajukan klaim BPJS?",
+    "ground_truth": "Klaim BPJS Kesehatan dan BPJS Ketenagakerjaan diproses melalui tim HRD. Siapkan dokumen identitas dan dokumen pendukung klaim, lalu serahkan ke HRD untuk diproses.",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apakah ada bonus karyawan?",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai kah ada bonus karyawan di kantor?",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait kah ada bonus karyawan berdasarkan SOP SDM.",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang kah ada bonus karyawan?",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai kah ada bonus karyawan?",
+    "ground_truth": "Bonus karyawan diberikan berdasarkan pencapaian KPI dan kinerja perusahaan secara keseluruhan, menggunakan Form Pemberian Bonus Karyawan (Form 16).",
+    "category": "Kompensasi & Benefit",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bagaimana proses promosi jabatan?",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai proses promosi jabatan di kantor?",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait proses promosi jabatan berdasarkan SOP SDM.",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang proses promosi jabatan?",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai proses promosi jabatan?",
+    "ground_truth": "Promosi diusulkan menggunakan Form Usulan Promosi (Form 17) oleh atasan langsung, berdasarkan hasil performance appraisal, kompetensi, dan ketersediaan posisi. Keputusan promosi menggunakan Form Promosi Jabatan (Form 18).",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa syarat untuk bisa dipromosikan?",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai syarat untuk bisa dipromosikan di kantor?",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait syarat untuk bisa dipromosikan berdasarkan SOP SDM.",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang syarat untuk bisa dipromosikan?",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai syarat untuk bisa dipromosikan?",
+    "ground_truth": "Syarat promosi meliputi: (1) Minimal 2 tahun di jabatan saat ini, (2) Nilai performance appraisal minimal 'Baik' selama 2 periode berturut-turut, (3) Memenuhi kompetensi jabatan yang dituju berdasarkan Kamus Kompetensi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa itu salary grading?",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai itu salary grading di kantor?",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait itu salary grading berdasarkan SOP SDM.",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang itu salary grading?",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai itu salary grading?",
+    "ground_truth": "Salary grading adalah sistem pengelompokan jabatan ke dalam grade/level tertentu berdasarkan bobot pekerjaan (job grading), yang menentukan rentang gaji (salary range) masing-masing posisi.",
+    "category": "Promosi & Karir",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa itu Assessment Center?",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi"
+  },
+  {
+    "question": "Bagaimanakah ketentuan mengenai itu Assessment Center di kantor?",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Tolong jelaskan aturan terkait itu Assessment Center berdasarkan SOP SDM.",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Bisakah saya mengetahui kebijakan tentang itu Assessment Center?",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi",
+    "is_paraphrase": true
+  },
+  {
+    "question": "Apa pedoman resmi perusahaan mengenai itu Assessment Center?",
+    "ground_truth": "Assessment Center adalah metode penilaian kompetensi karyawan menggunakan berbagai instrumen seperti: Behavior Event Interview (BEI), Case Analysis, Group Discussion, In-Basket Exercise, Presentation, dan Role Play.",
+    "category": "Assessment & Kompetensi",
+    "is_paraphrase": true
+  }
+]
