@@ -277,7 +277,7 @@ with left_col:
     # 3D Showcase Link
     st.markdown("<div class='sidebar-title'>🌌 3D Orchestration</div>", unsafe_allow_html=True)
     st.markdown("<p style='font-size: 13px; color: #64748B;'>Eksplorasi visualisasi 3D WebGL Multi-Agent Network, chip ARM64 bitmask, dan HUD telemetri:</p>", unsafe_allow_html=True)
-    st.link_button("🚀 Buka 3D Architecture Showcase", "https://github.com/indri007/AMAZON/blob/main/showcase/index.html", use_container_width=True)
+    st.link_button("🚀 Buka 3D Architecture Showcase (Lokal)", "http://localhost:3000", use_container_width=True)
 
     st.markdown("<hr style='border-color: #E2E8F0; margin: 16px 0;'>", unsafe_allow_html=True)
 
