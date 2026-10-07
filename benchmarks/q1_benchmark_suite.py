@@ -14,8 +14,10 @@ from typing import List, Dict, Any, Tuple
 
 # ── 1. BIT 0: DATASET EXPANDER (Target N >= 100) ─────────────────────────────
 def generate_expanded_golden_dataset(base_file: str = "golden_dataset.json") -> List[Dict[str, Any]]:
-    """Memperluas dataset dengan variasi parafrase pertanyaan untuk mencapai N >= 100."""
-    with open(base_file, "r", encoding="utf-8") as f:
+    path = Path(base_file)
+    if not path.exists():
+        path = Path(__file__).parent / base_file
+    with open(path, "r", encoding="utf-8") as f:
         base_data = json.load(f)
 
     expanded = []

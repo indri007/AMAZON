@@ -48,13 +48,16 @@ MD_REPORT = REPORT_DIR / "AMAZON_AUDIT.md"
 
 EXPECTED_FILES = [
     "README.md",
-    "ARCHITECTURE.md",
     "streamlit_app.py",
 ]
 
 EXPECTED_DIRS = [
     "langflow",
     "hrd-docs",
+    "src/assembly",
+    "benchmarks",
+    "docs",
+    "tests",
 ]
 
 SECRET_PATTERNS = [
@@ -183,7 +186,9 @@ def audit_readme(root: Path, results: dict):
 # AUDIT 4 — ARCHITECTURE
 # ============================================================
 def audit_architecture(root: Path, results: dict):
-    path = root / "ARCHITECTURE.md"
+    path = root / "docs" / "ARCHITECTURE.md"
+    if not path.exists():
+        path = root / "ARCHITECTURE.md"
     if not path.exists():
         add_result(results, "architecture_document", "WARN", "ARCHITECTURE.md not found.")
         return
@@ -321,7 +326,7 @@ def audit_documents(root: Path, results: dict):
 # ============================================================
 def audit_persistence(root: Path, results: dict):
     content = ""
-    for filename in ["README.md", "ARCHITECTURE.md"]:
+    for filename in ["README.md", "ARCHITECTURE.md", "docs/ARCHITECTURE.md", "docs/PERSISTENCE_PLAN.md", "PERSISTENCE_PLAN.md"]:
         path = root / filename
         if path.exists():
             content += "\n" + read_text(path)

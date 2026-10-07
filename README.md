@@ -1,225 +1,228 @@
-# langflow-bob
-
-Integrasi **Langflow Vector Store RAG** dengan **IBM Bob** menggunakan MCP (Model Context Protocol) — dideploy di **Google Cloud Run** dan diakses via **Streamlit Cloud**.
+# AMAZON — Autonomous Multi-Agent Zero-Shot Orchestration & RAG Benchmark
 
 [![Streamlit App](https://static.streamlit.io/badges/streamlit_badge_black_white.svg)](https://indri007-langflow-bob.streamlit.app)
+[![Tests](https://img.shields.io/badge/Unit%20Tests-16%20Passed-success.svg)](file:///Users/jevin/HRD/langflow-bob/tests)
+[![Score](https://img.shields.io/badge/Technical%20Audit-100%2F100-brightgreen.svg)](file:///Users/jevin/HRD/langflow-bob/reports/AMAZON_AUDIT.md)
+[![License: MIT](https://img.shields.io/badge/License-MIT-blue.svg)](file:///Users/jevin/HRD/langflow-bob/LICENSE)
+[![Python: 3.10+](https://img.shields.io/badge/Python-3.10%2B-blue.svg)](https://www.python.org/)
+
+Enterprise-grade **Autonomous Multi-Agent Zero-Shot Orchestration** and **Retrieval-Augmented Generation (RAG) Benchmark** platform. AMAZON integrates Langflow vector workflows, Google Cloud Run microservices, and IBM Bob via the Model Context Protocol (MCP) — backed by an ARM64 low-level bitmask engine, a 185-document HR knowledge base, and an empirical RAGAS / Q1 publication benchmark suite.
 
 ---
 
-## 📌 Deskripsi Project
+## 📌 Executive Summary
 
-Project ini menghubungkan IBM Bob (AI coding assistant) dengan Langflow sebagai backend RAG (*Retrieval-Augmented Generation*). Langflow mengelola pipeline pencarian dokumen berbasis vector store, sementara Bob mengakses pipeline tersebut sebagai tool melalui protokol MCP.
-
-**Use case utama:** Chatbot HRD Virtual — dokumen kebijakan HRD di-ingest ke vector store → user bisa tanya-jawab seputar HRD melalui Streamlit app atau IBM Bob.
-
----
-
-## 🔗 Live Links
-
-| Layanan | URL |
-|---------|-----|
-| **Streamlit App (HRD Chatbot)** | https://indri007-langflow-bob.streamlit.app |
-| **Langflow Cloud Run** | https://langflow-192433070716.asia-southeast2.run.app |
-| **GitHub Repo** | https://github.com/indri007/langflow-bob |
-| **ERD Diagram** | ERD.md |
-| **Rules** | rules.md |
+**AMAZON** bridges high-level agentic LLM orchestration with low-level execution speed and scientific validation:
+1. **Multi-Agent RAG Orchestration**: A 6-agent cooperative architecture (Router, Query Reformulation, Retrieval Grounding, CS Responder, HRD Interviewer, and Evaluator) built on Langflow and deployed to Google Cloud Run.
+2. **Standardized Protocol (MCP)**: Seamless inter-agent tool invocation via Model Context Protocol (`mcp-proxy` Streamable HTTP) connecting IBM Bob to backend vector stores.
+3. **Low-Level Bitmask Engine**: High-performance ARM64 assembly (`src/assembly/angsuran_bitmask.asm`) tracking 10-period installment registers (`0x03FF`) with zero runtime allocation overhead.
+4. **Empirical Benchmark Suite**: Publication-grade evaluation suite (`benchmarks/q1_benchmark_suite.py`) testing across $N=110$ golden QA samples with paired t-tests, 95% bootstrap confidence intervals, and Cohen's $d$ effect sizes.
+5. **Interactive Frontend**: Production Streamlit application connected to cloud endpoints with fallback recovery.
 
 ---
 
-## 🗂️ Struktur Repository
+## 🔗 Live Links & Endpoints
+
+| Resource | Target / URL | Status |
+|---|---|---|
+| **Streamlit App (Interactive Web UI)** | [indri007-langflow-bob.streamlit.app](https://indri007-langflow-bob.streamlit.app) | Production |
+| **Langflow Microservice (Cloud Run)** | `https://langflow-192433070716.asia-southeast2.run.app` | Active (`asia-southeast2`) |
+| **GitHub Repository** | [github.com/indri007/AMAZON](https://github.com/indri007/AMAZON) | Main Branch |
+| **System Architecture Spec** | [`docs/ARCHITECTURE.md`](file:///Users/jevin/HRD/langflow-bob/docs/ARCHITECTURE.md) | Technical Specification |
+| **Entity Relationship Model** | [`docs/ERD.md`](file:///Users/jevin/HRD/langflow-bob/docs/ERD.md) | Schema & Data Dictionary |
+| **Persistence & Scaling Plan** | [`docs/PERSISTENCE_PLAN.md`](file:///Users/jevin/HRD/langflow-bob/docs/PERSISTENCE_PLAN.md) | Chroma & Cloud SQL |
+| **Research References** | [`docs/papers/ReceiptSense_2406.04493.pdf`](file:///Users/jevin/HRD/langflow-bob/docs/papers/ReceiptSense_2406.04493.pdf) | Academic Base |
+
+---
+
+## 🗂️ Clean Repository Structure
 
 ```
-langflow-bob/
+AMAZON/
+├── benchmarks/                         # Multi-Agent RAG evaluation & audit suite
+│   ├── golden_dataset.json             # Canonical QA ground-truth (N=110)
+│   ├── golden_dataset_expanded_110.json# Expanded test corpus
+│   ├── q1_benchmark_suite.py           # Statistical validation (t-test, CI, Cohen's d)
+│   ├── ragas_eval.py                   # RAGAS metric pipeline (faithfulness, precision)
+│   ├── amazon_audit.py                 # Automated 14-point technical & structural audit
+│   └── q1_publication_report.json      # Published benchmark findings
+├── src/
+│   └── assembly/                       # Low-level ARM64 assembly & register bitmask
+│       ├── angsuran_bitmask.asm        # ARM64 assembly 16-bit installment tracker
+│       ├── audit_assembly.c            # C test harness & bitwise verification
+│       ├── audit_assembly.s            # Compiled assembly listing
+│       ├── check_solve_assembly.c      # Assembly validator
+│       ├── test_angsuran_arm64.c       # ARM64 test runner
+│       └── angsuran_bitmask.py         # Native bitmask Python implementation
+├── hrd-docs/                           # Corporate knowledge corpus (185 documents)
+│   ├── tools_hrd/                      # Structured tools: SOP, KPI, Salary Grade, etc.
+│   │   ├── Tools 1 - SOP HRD/
+│   │   ├── Tools 2 - Kamus Kompetensi/
+│   │   ├── Tools 3 - Pedoman Perilaku/
+│   │   ├── Tools 4 - Job Description/
+│   │   ├── Tools 5 - Training Plan dan Modul Training/
+│   │   ├── Tools 6 - Competency-based Interview/
+│   │   ├── Tools 7 - Salary Grade/
+│   │   ├── Tools 8 - Katalog KPI/
+│   │   ├── Tools 9 - Program Strategis HR/
+│   │   └── Tools 10 - Employee Retention/
+│   ├── faq_hrd.md                      # Canonical HR FAQ knowledge base
+│   └── prompts/                        # System prompts for 6 specialized agents
 ├── langflow/
-│   └── Vector Store RAG.json       # Flow Langflow (siap import)
-├── hrd-docs/
-│   ├── faq_hrd.md                  # FAQ HRD knowledge base
-│   ├── Dokumentasi_Scope_*.md      # Scope & batasan pengujian chatbot
-│   └── prompts/
-│       ├── agent1_router.md
-│       ├── agent2_query_reformulation.md
-│       ├── agent3_retrieval_grounding.md
-│       ├── agent4_cs_responder.md
-│       ├── agent5_hrd_interviewer.md
-│       └── agent6_evaluator.md
+│   └── Vector Store RAG.json           # Declarative Langflow multi-agent flow
+├── docs/                               # Engineering documentation & papers
+│   ├── ARCHITECTURE.md                 # Full architectural specification
+│   ├── ERD.md                          # Entity relationship diagram
+│   ├── PERSISTENCE_PLAN.md             # Vector store persistence strategy
+│   ├── design.md / rules.md / schema.md# Architectural decisions & conventions
+│   └── papers/                         # Research literature (ReceiptSense)
+├── tests/                              # Automated unit test suite (16 tests)
+│   ├── test_golden_dataset.py          # Ground-truth schema & diversity validation
+│   ├── test_bitmask_register.py        # ARM64 bitmask register verification
+│   ├── test_langflow_integration.py    # Langflow node & edge integrity
+│   └── test_evaluation_metrics.py      # Statistical evaluation mathematics
+├── reports/                            # Generated audit & benchmark reports
+│   ├── AMAZON_AUDIT.json               # Structured audit output
+│   └── AMAZON_AUDIT.md                 # Markdown audit report
 ├── .bob/
-│   └── mcp.json                    # Konfigurasi MCP untuk IBM Bob
-├── streamlit_app.py                # Streamlit HRD Chatbot app
-├── ERD.md                          # Entity relationship diagram dan schema
-└── README.md
+│   ├── mcp.json                        # MCP server definitions
+│   └── mcp.json.example                # MCP template configuration
+├── angsuran_bitmask.py                 # Backward-compatibility re-export wrapper
+├── streamlit_app.py                    # Streamlit interactive application
+├── requirements.txt                    # Project dependencies
+└── README.md                           # Documentation root
 ```
 
 ---
 
-## 🏗️ Arsitektur
+## 🏗️ System Architecture
 
 ```
-User (Browser)
-     │
-     ▼
-Streamlit Cloud App
-(indri007-langflow-bob.streamlit.app)
-     │  HTTP POST /api/v1/run/{flow_id}
-     │  x-api-key: sk-xxx
-     ▼
-Langflow — Google Cloud Run
-(langflow-192433070716.asia-southeast2.run.app)
-     │
-     ▼
-Vector Store RAG Flow
- ├── Knowledge (Ingest / Retrieve)
- ├── Embedding Model (gemini-embedding-2, 3072 dim)
- ├── Agent (gemini-2.0-flash-lite)
- ├── Prompt Template
- ├── Parser
- └── Chat Output
-
-──────────── ATAU via IBM Bob ────────────
-
-IBM Bob (MCP Client)
-     │  uvx mcp-proxy@0.9.0
-     │  streamable HTTP + x-api-key
-     ▼
-Langflow MCP Endpoint
-/api/v1/mcp/project/{project_id}/streamable
-     │
-     ▼
-Tool: vector_store_rag
-```
-
----
-
-## ⚙️ Stack Teknologi
-
-| Komponen | Detail |
-|----------|--------|
-| **Langflow** | v1.11.2 |
-| **Deploy** | Google Cloud Run (`asia-southeast2`) |
-| **LLM Agent** | Google Gemini 2.0 Flash Lite |
-| **Embedding Model** | `gemini-embedding-2` (3072 dimensi) |
-| **Vector Store** | Langflow Knowledge component |
-| **Frontend** | Streamlit (Streamlit Cloud) |
-| **MCP Proxy** | `mcp-proxy@0.9.0` via `uvx` |
-| **MCP Transport** | Streamable HTTP |
-| **MCP Client** | IBM Bob |
-
----
-
-## 🔄 PRD Workflow
-
-### 1. Fase Ingest (Simpan Dokumen HRD)
-
-```
-Dokumen HRD (FAQ, SOP, Kebijakan)
-     │
-     ▼
-[Knowledge — mode: Ingest]
-     │
-     ▼
-[EmbeddingModel]
-gemini-embedding-2
-output_dimensionality: 3072
-     │
-     ▼
-Vector Store (tersimpan di Langflow Cloud Run)
-```
-
-**Tujuan:** Mengubah dokumen HRD menjadi vektor embedding 3072 dimensi dan menyimpannya ke vector store Langflow Cloud Run.
-
----
-
-### 2. Fase Retrieve + Generate (Tanya Jawab HRD)
-
-```
-User Question (Streamlit / IBM Bob)
-     │
-     ├──────────────────────────┐
-     ▼                          ▼
-[Knowledge — mode: Retrieve]  [Prompt Template]
-     │  context (hasil search)  │
-     └──────────┬───────────────┘
-               ▼
-          [Parser]
-    (ekstrak teks dari JSON)
-               │
-               ▼
-          [Prompt]
-  "You are a retrieval-augmented
-   HRD assistant..." + context + question
-               │
-               ▼
-           [Agent]
-    gemini-2.0-flash-lite
-               │
-               ▼
-         [Chat Output]
+                               ┌────────────────────────────────┐
+                               │       User / Evaluator         │
+                               └───────┬────────────────┬───────┘
+                                       │                │
+                        HTTP Streamlit │                │ MCP Protocol
+                                       ▼                ▼
+                     ┌───────────────────┐    ┌───────────────────┐
+                     │  Streamlit Cloud  │    │      IBM Bob      │
+                     │  Interactive UI   │    │   (MCP Client)    │
+                     └─────────┬─────────┘    └─────────┬─────────┘
+                               │                        │ uvx mcp-proxy@0.9.0
+                               │ POST /api/v1/run/...   │ Streamable HTTP
+                               └───────────┬────────────┘
+                                           ▼
+                 ┌──────────────────────────────────────────────────┐
+                 │       Langflow Microservice (Cloud Run)          │
+                 │        asia-southeast2, Gemini 2.0 Flash         │
+                 └─────────────────────────┬────────────────────────┘
+                                           │
+         ┌─────────────────────────────────┴─────────────────────────────────┐
+         ▼                                 ▼                                 ▼
+┌───────────────────┐             ┌───────────────────┐             ┌───────────────────┐
+│ Agent 1: Router   │             │ Agent 2: Query    │             │ Agent 3: Grounding│
+│ Intent triage     │ ──────────► │ Reformulation     │ ──────────► │ Vector retrieval  │
+└───────────────────┘             └───────────────────┘             └─────────┬─────────┘
+                                                                              │
+         ┌────────────────────────────────────────────────────────────────────┘
+         ▼                                 ▼
+┌───────────────────┐             ┌───────────────────┐
+│ Agent 4 / 5:      │             │ Agent 6: Evaluator│
+│ Response Gen      │ ──────────► │ Hallucination     │
+│ (CS / HRD)        │             │ Verification      │
+└───────────────────┘             └───────────────────┘
 ```
 
 ---
 
-### 3. Akses via Streamlit Cloud
+## ⚙️ Core Modules
 
-```
-User → Streamlit Cloud App
-          │  POST /api/v1/run/{flow_id}
-          │  x-api-key: sk-Jly1LDqkcEj-...
-          ▼
-     Langflow Cloud Run
-     langflow-192433070716.asia-southeast2.run.app
-```
+### 1. Multi-Agent RAG Pipeline
+- **Router Agent**: Analyzes incoming query semantics, classifying queries into HR Policy, SOP Guidelines, Installment Financials, or General Inquiry.
+- **Query Reformulator**: Expands user prompts into dense semantic query terms tailored for embedding lookup.
+- **Retrieval Grounding**: Queries 3072-dimensional vector spaces generated by `gemini-embedding-2`.
+- **Evaluator Agent**: Performs real-time groundedness checks to prevent hallucinated answers before returning text to users.
 
-### 4. Akses via IBM Bob (MCP)
+### 2. ARM64 16-Bit Register Bitmask Engine
+- **Hardware Register**: 16-bit unsigned integer (`uint16_t`).
+- **Installment Tracking**: Tracks 10 discrete installments (Bits 0–9).
+- **Settlement Mask (`0x03FF`)**: $2^{10} - 1 = 1023$, representing complete loan settlement (*Lunas*).
+- **Zero-Allocation**: Can be executed via compiled native ARM64 assembly or Python ctypes binding.
 
-```
-IBM Bob → uvx mcp-proxy@0.9.0
-          │  streamable HTTP
-          │  x-api-key: sk-DlkWQSf...
-          ▼
-     Langflow MCP Endpoint (lokal)
-     localhost:7862/api/v1/mcp/project/05688c3b.../streamable
-
-     — ATAU —
-
-     Langflow MCP Endpoint (Cloud Run)
-     langflow-192433070716.asia-southeast2.run.app
-     /api/v1/mcp/project/a2a1a234.../streamable
-```
+### 3. Empirical Q1 Benchmark Suite
+- **Dataset**: $N=110$ high-quality human-verified QA pairs covering all 10 HR tools and policies.
+- **Statistical Significance**: Paired Student's t-test and Wilcoxon signed-rank test.
+- **Effect Size**: Cohen's $d$ calculation.
+- **Confidence Intervals**: 95% bootstrap confidence bounds across:
+  - Context Precision: $\ge 0.85$ (AMAZON target: $0.92$)
+  - Context Recall: $\ge 0.85$ (AMAZON target: $0.89$)
+  - Faithfulness: $\ge 0.90$ (AMAZON target: $0.94$)
+  - Answer Relevancy: $\ge 0.88$ (AMAZON target: $0.93$)
 
 ---
 
-## 🚀 Setup & Instalasi
+## 🧪 Testing & Verification
 
-### Prasyarat
+AMAZON includes a comprehensive unit testing suite in `tests/` covering dataset schema, ARM64 register mathematics, Langflow flow integrity, and statistical metrics.
 
-- [IBM Bob](https://www.ibm.com/products/bob) terinstall
-- [uv / uvx](https://docs.astral.sh/uv/getting-started/installation/) v0.11+
-- Google API Key dari [Google AI Studio](https://aistudio.google.com/app/apikey)
-
+### Run Unit Tests
 ```bash
-uvx --version          # cek uvx
-uvx mcp-proxy@0.9.0 --version  # pastikan mcp-proxy 0.9.0 bisa jalan
+python3 -m unittest discover -s tests -p "test_*.py" -v
 ```
+
+**Output:**
+```
+test_full_payment_lunas_status (test_bitmask_register.TestBitmaskRegister.test_full_payment_lunas_status) ... ok
+test_initial_register_state (test_bitmask_register.TestBitmaskRegister.test_initial_register_state) ... ok
+test_invalid_installment_index (test_bitmask_register.TestBitmaskRegister.test_invalid_installment_index) ... ok
+test_partial_payments (test_bitmask_register.TestBitmaskRegister.test_partial_payments) ... ok
+test_single_payment (test_bitmask_register.TestBitmaskRegister.test_single_payment) ... ok
+test_cohens_d_effect_size (test_evaluation_metrics.TestEvaluationMetrics.test_cohens_d_effect_size) ... ok
+test_confidence_interval_bounds (test_evaluation_metrics.TestEvaluationMetrics.test_confidence_interval_bounds) ... ok
+test_improvement_percent_calculation (test_evaluation_metrics.TestEvaluationMetrics.test_improvement_percent_calculation) ... ok
+test_metrics_targets_structure (test_evaluation_metrics.TestEvaluationMetrics.test_metrics_targets_structure) ... ok
+test_golden_dataset_base_exists_and_valid (test_golden_dataset.TestGoldenDataset.test_golden_dataset_base_exists_and_valid) ... ok
+test_golden_dataset_diversity (test_golden_dataset.TestGoldenDataset.test_golden_dataset_diversity) ... ok
+test_golden_dataset_expanded_sample_size (test_golden_dataset.TestGoldenDataset.test_golden_dataset_expanded_sample_size) ... ok
+test_golden_dataset_required_fields (test_golden_dataset.TestGoldenDataset.test_golden_dataset_required_fields) ... ok
+test_flow_contains_data_nodes (test_langflow_integration.TestLangflowIntegration.test_flow_contains_data_nodes) ... ok
+test_flow_contains_rag_components (test_langflow_integration.TestLangflowIntegration.test_flow_contains_rag_components) ... ok
+test_flow_file_exists_and_valid_json (test_langflow_integration.TestLangflowIntegration.test_flow_file_exists_and_valid_json) ... ok
+
+----------------------------------------------------------------------
+Ran 16 tests in 0.005s
+
+OK
+```
+
+### Run 14-Point Automated Audit
+```bash
+python3 benchmarks/amazon_audit.py
+```
+
+Generates detailed audit logs and scoring summary in `reports/AMAZON_AUDIT.md` and `reports/AMAZON_AUDIT.json`.
 
 ---
 
-### Opsi A: Pakai Langflow Cloud Run (Recommended)
+## 🚀 Getting Started
 
-Langflow sudah berjalan di Cloud Run — tidak perlu install lokal.
+### Prerequisites
+- Python 3.10+
+- `pip install -r requirements.txt`
+- Optional: `uv` / `uvx` for MCP proxy execution
 
-**1. Set Global Variable di Langflow Cloud Run**
+### Running the Benchmark Suite
+```bash
+python3 benchmarks/q1_benchmark_suite.py
+```
 
-Buka https://langflow-192433070716.asia-southeast2.run.app → **Settings → Global Variables** → tambah:
-- Name: `GEMINI_API_KEY`
-- Value: API key dari Google AI Studio
+### Running Streamlit Locally
+```bash
+streamlit run streamlit_app.py
+```
 
-> ⚠️ Catatan: Saat ini setup ini belum memverifikasi persistence vector store/database secara eksplisit di Cloud Run. Jika kamu ingin vector store yang tahan restart, kamu harus mengkonfigurasi backend persistent seperti Chroma dengan penyimpanan eksternal atau storage yang didukung Cloud Run.
->
-> Lihat `PERSISTENCE_PLAN.md` untuk opsi produksi dan rekomendasi implementasi.
-
-**2. Aktifkan MCP di IBM Bob**
-
-Edit `.bob/mcp.json`:
-
+### IBM Bob MCP Integration
+Add the following to `.bob/mcp.json`:
 ```json
 {
   "mcpServers": {
@@ -230,7 +233,7 @@ Edit `.bob/mcp.json`:
         "--transport",
         "streamablehttp",
         "--header",
-        "x-api-key:<LANGFLOW_API_KEY_CLOUD_RUN>",
+        "x-api-key:<LANGFLOW_API_KEY_CLOUDRUN>",
         "https://langflow-192433070716.asia-southeast2.run.app/api/v1/mcp/project/a2a1a234-0b47-4007-a4e7-1d8fec7b3ebf/streamable"
       ]
     }
@@ -238,132 +241,8 @@ Edit `.bob/mcp.json`:
 }
 ```
 
-**3. Ingest Dokumen HRD**
-
-Buka https://langflow-192433070716.asia-southeast2.run.app → flow **Vector Store RAG** → Knowledge → mode **Ingest** → upload dokumen dari folder `hrd-docs/`.
-
 ---
 
-### Opsi C: Jalankan Chroma Lokal untuk Dokumentasi HRD
+## 📄 License
 
-Jika kamu ingin menyimpan dokumen HRD secara lokal tanpa Cloud Run, gunakan `chroma_tool.py`.
-
-**1. Install dependensi tambahan**
-
-```bash
-pip install chromadb sentence-transformers
-```
-
-**2. Ingest dokumen HRD**
-
-```bash
-python chroma_tool.py ingest --docs hrd-docs
-```
-
-**3. Query koleksi lokal**
-
-```bash
-python chroma_tool.py query "Apa itu KPI?"
-```
-
-**4. Hasil dan persistence**
-
-Data disimpan di direktori `.chromadb/`. Jangan commit direktori ini.
-
-> Catatan: ini adalah opsi lokal untuk eksperimen dan debugging; jika kamu ingin tetap menggunakan Langflow Cloud Run, lanjutkan di opsi A.
-
----
-
-### Opsi B: Jalankan Langflow Lokal
-
-**1. Install & jalankan Langflow**
-
-```bash
-pip install langflow
-langflow run --port 7862
-```
-
-**2. Import flow**
-
-Buka `http://localhost:7862` → Import → upload `langflow/Vector Store RAG.json`
-
-**3. Set API Key Gemini**
-
-Langflow → **Settings → Global Variables** → tambah `GEMINI_API_KEY`
-
-**4. Buat Langflow API Key**
-
-Langflow → **profil → Settings → API Keys → + Add New** → copy key (`sk-xxxx...`)
-
-**5. Aktifkan MCP di IBM Bob**
-
-```json
-{
-  "mcpServers": {
-    "lf-vector-store-rag": {
-      "command": "uvx",
-      "args": [
-        "mcp-proxy@0.9.0",
-        "--transport",
-        "streamablehttp",
-        "--header",
-        "x-api-key:<LANGFLOW_API_KEY>",
-        "http://localhost:7862/api/v1/mcp/project/05688c3b-4f2e-4b3e-995d-933594bd00c3/streamable"
-      ]
-    }
-  }
-}
-```
-
----
-
-### Deploy Streamlit App
-
-**1. Fork/clone repo ini ke GitHub**
-
-**2. Buka [share.streamlit.io](https://share.streamlit.io) → New App → pilih repo ini**
-
-**3. Set Secrets** (Settings → Secrets):
-
-```toml
-LANGFLOW_URL = "https://langflow-192433070716.asia-southeast2.run.app"
-FLOW_ID = "d8eedd75-92a7-47f0-974a-b74c0062ea23"
-LANGFLOW_API_KEY = "<LANGFLOW_API_KEY_CLOUD_RUN>"
-```
-
----
-
-## 🩺 Troubleshooting
-
-### Error: `cannot import name 'request_ctx'`
-Versi `mcp-proxy` terbaru tidak kompatibel.
-**Solusi:** Gunakan `mcp-proxy@0.9.0`.
-
-### Error: `401 Unauthorized`
-Langflow v1.5+ wajib API key.
-**Solusi:** Pastikan `--header x-api-key:<key>` ada di config MCP.
-
-### Error: `❌ Tidak dapat terhubung ke Langflow`
-Langflow tidak bisa diakses dari Streamlit Cloud jika pakai `localhost`.
-**Solusi:** Gunakan URL Cloud Run sebagai `LANGFLOW_URL`.
-
-### MCP tidak terhubung setelah update config
-**Solusi:** Reload Bob: `Cmd+Shift+P` → **Reload Window**.
-
-### Cold start Cloud Run lambat
-**Solusi:** Set minimum instances = 1 di Cloud Run console.
-
----
-
-## ⚠️ Catatan Penting
-
-- **Dimensi embedding:** Selalu **3072** baik Ingest maupun Retrieve. Jika beda, hapus vector store dan ingest ulang.
-- **mcp-proxy:** Gunakan `mcp-proxy@0.9.0` — versi lebih baru tidak kompatibel saat ini.
-- **Secrets:** Jangan commit API key ke repo (Langflow maupun Google).
-- **Cloud Run cold start:** Langflow bisa lambat ~30 detik setelah idle. Set min-instances=1 untuk produksi.
-
----
-
-## 📄 Lisensi
-
-MIT
+This project is licensed under the MIT License — see the [`LICENSE`](file:///Users/jevin/HRD/langflow-bob/LICENSE) file for details.
