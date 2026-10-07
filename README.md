@@ -26,7 +26,7 @@ Enterprise-grade **Autonomous Multi-Agent Zero-Shot Orchestration** and **Retrie
 | Resource | Target / URL | Status |
 |---|---|---|
 | **3D Architecture Showcase (Interactive UI/UX)** | [`showcase/index.html`](file:///Users/jevin/HRD/langflow-bob/showcase/index.html) | Ready (WebGL / Three.js) |
-| **Streamlit App (Interactive Web UI)** | [indri007-langflow-bob.streamlit.app](https://indri007-langflow-bob.streamlit.app) | Production |
+| **Streamlit App (Interactive Web UI)** | [langflow-bob-idewcrvkhn3lsxjcnw4pqn.streamlit.app](https://langflow-bob-idewcrvkhn3lsxjcnw4pqn.streamlit.app) | Production (Active) |
 | **Langflow Microservice (Cloud Run)** | `https://langflow-192433070716.asia-southeast2.run.app` | Active (`asia-southeast2`) |
 | **GitHub Repository** | [github.com/indri007/AMAZON](https://github.com/indri007/AMAZON) | Main Branch |
 | **System Architecture Spec** | [`docs/ARCHITECTURE.md`](file:///Users/jevin/HRD/langflow-bob/docs/ARCHITECTURE.md) | Technical Specification |
