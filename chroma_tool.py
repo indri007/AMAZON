@@ -1,18 +1,19 @@
 from __future__ import annotations
 
 import argparse
+import json
 from pathlib import Path
-from typing import Dict, Iterable, List
+from typing import Dict, List
 
 import chromadb
-from chromadb.config import Settings
 from chromadb.utils import embedding_functions
 
 DB_DIR = Path(".chromadb")
-COLLECTION_NAME = "hrd_docs"
+COLLECTION_HRD = "hrd_docs"
+COLLECTION_MRC = "idk_mrc_qa"
 
 
-def chunk_text(text: str, chunk_size: int = 700, overlap: int = 100) -> List[str]:
+def chunk_text(text: str, chunk_size: int = 160, overlap: int = 30) -> List[str]:
     tokens: List[str] = text.split()
     if not tokens:
         return []
@@ -41,60 +42,105 @@ def load_md_documents(folder: Path) -> List[Dict[str, str]]:
     return docs
 
 
-def get_client() -> chromadb.Client:
-    return chromadb.Client(
-        Settings(
-            chroma_db_impl="duckdb+parquet",
-            persist_directory=str(DB_DIR),
-        )
-    )
+def load_qa_training_data(folder: Path) -> List[Dict[str, str]]:
+    docs: List[Dict[str, str]] = []
+    for json_file in ["idk_mrc_test.json", "idk_mrc_valid.json"]:
+        path = folder / json_file
+        if path.exists():
+            try:
+                items = json.loads(path.read_text(encoding="utf-8"))
+                for idx, item in enumerate(items):
+                    context = item.get("context", "")
+                    qas = item.get("qas", [])
+                    qa_texts = []
+                    for q in qas:
+                        question = q.get("question", "")
+                        answers = [a.get("text", "") for a in q.get("answers", [])]
+                        ans_str = ", ".join(answers) if answers else "[Tidak terjawab]"
+                        qa_texts.append(f"Q: {question} -> A: {ans_str}")
+                    
+                    combined = f"Konteks: {context}\n" + "\n".join(qa_texts)
+                    docs.append({
+                        "id": f"{json_file}#{idx}",
+                        "text": combined,
+                        "source": f"training/{json_file}"
+                    })
+            except Exception as e:
+                print(f"Warning: gagal membaca {path}: {e}")
+    return docs
 
 
-def ingest_docs(source_folder: Path, chunk_size: int, overlap: int) -> None:
-    documents = load_md_documents(source_folder)
-    if not documents:
-        raise SystemExit(f"Tidak ditemukan file Markdown di: {source_folder}")
+def get_client() -> chromadb.PersistentClient:
+    return chromadb.PersistentClient(path=str(DB_DIR))
 
-    embed = embedding_functions.SentenceTransformerEmbeddingFunction(
-        model_name="all-MiniLM-L6-v2"
-    )
+
+def ingest_all(source_folder: Path) -> None:
+    print("=" * 70)
+    print("🧠 MEMULAI INGESTI & PELATIHAN DUAL-COLLECTION CHROMADB")
+    print("=" * 70)
+
     client = get_client()
+    embed = embedding_functions.DefaultEmbeddingFunction()
 
-    if COLLECTION_NAME in [col.name for col in client.list_collections()]:
-        client.delete_collection(COLLECTION_NAME)
+    # 1. INGEST COLLECTION 1: HRD KNOWLEDGE BASE
+    print("\n[1/2] Memproses Dokumen Pengetahuan HRD...")
+    hr_docs = load_md_documents(source_folder)
+    print(f"📄 File Markdown ditemukan: {len(hr_docs)} file")
 
-    collection = client.create_collection(
-        name=COLLECTION_NAME,
-        embedding_function=embed,
-    )
-
-    ids: List[str] = []
-    documents_to_add: List[str] = []
-    metadatas: List[Dict[str, str]] = []
-
-    for doc in documents:
-        chunks = chunk_text(doc["text"], chunk_size=chunk_size, overlap=overlap)
-        for index, chunk in enumerate(chunks, start=1):
-            ids.append(f"{doc['id']}#{index}")
-            documents_to_add.append(chunk)
-            metadatas.append({"source": doc["source"], "chunk": str(index)})
-
-    collection.add(
-        ids=ids,
-        documents=documents_to_add,
-        metadatas=metadatas,
-    )
-    client.persist()
-    print(f"✅ Ingest selesai. {len(ids)} chunk tersimpan di collection '{COLLECTION_NAME}'.")
-
-
-def query_docs(query: str, top_k: int) -> None:
-    client = get_client()
     try:
-        collection = client.get_collection(COLLECTION_NAME)
-    except ValueError:
+        client.delete_collection(COLLECTION_HRD)
+    except Exception:
+        pass
+    col_hrd = client.create_collection(name=COLLECTION_HRD, embedding_function=embed)
+
+    ids_hr, texts_hr, metas_hr = [], [], []
+    for doc in hr_docs:
+        chunks = chunk_text(doc["text"], chunk_size=150, overlap=30)
+        for idx, chunk in enumerate(chunks, start=1):
+            ids_hr.append(f"{doc['id']}#{idx}")
+            texts_hr.append(chunk)
+            metas_hr.append({"source": doc["source"], "chunk": str(idx), "category": "HR_Policy"})
+
+    col_hrd.add(ids=ids_hr, documents=texts_hr, metadatas=metas_hr)
+    print(f"✅ Collection '{COLLECTION_HRD}' selesai: {len(ids_hr)} chunks tersimpan!")
+
+    # 2. INGEST COLLECTION 2: IDK-MRC QA DATASET
+    print("\n[2/2] Memproses Korpus QA Bahasa Indonesia (IDK-MRC)...")
+    qa_docs = load_qa_training_data(Path("training/data"))
+    print(f"📚 Sampel QA ditemukan: {len(qa_docs)} sampel")
+
+    try:
+        client.delete_collection(COLLECTION_MRC)
+    except Exception:
+        pass
+    col_mrc = client.create_collection(name=COLLECTION_MRC, embedding_function=embed)
+
+    ids_mrc, texts_mrc, metas_mrc = [], [], []
+    for doc in qa_docs:
+        ids_mrc.append(doc["id"])
+        texts_mrc.append(doc["text"])
+        metas_mrc.append({"source": doc["source"], "category": "Indonesian_MRC"})
+
+    # Batch add for QA dataset
+    batch_size = 100
+    for i in range(0, len(ids_mrc), batch_size):
+        end = min(i + batch_size, len(ids_mrc))
+        col_mrc.add(ids=ids_mrc[i:end], documents=texts_mrc[i:end], metadatas=metas_mrc[i:end])
+
+    print(f"✅ Collection '{COLLECTION_MRC}' selesai: {len(ids_mrc)} QA contexts tersimpan!")
+    print("\n" + "=" * 70)
+    print(f"🎉 SUKSES! Total {len(ids_hr) + len(ids_mrc)} aset vektor tersimpan di {DB_DIR}")
+    print("=" * 70)
+
+
+def query_docs(query: str, collection_name: str = COLLECTION_HRD, top_k: int = 3) -> None:
+    client = get_client()
+    embed = embedding_functions.DefaultEmbeddingFunction()
+    try:
+        collection = client.get_collection(collection_name, embedding_function=embed)
+    except Exception:
         raise SystemExit(
-            f"Database tidak ditemukan. Jalankan dulu: python chroma_tool.py ingest"
+            f"Collection '{collection_name}' tidak ditemukan. Jalankan dulu: python chroma_tool.py ingest"
         )
 
     results = collection.query(
@@ -107,42 +153,50 @@ def query_docs(query: str, top_k: int) -> None:
         print("Tidak ada hasil untuk query ini.")
         return
 
-    print(f"🔎 Top {top_k} hasil:")
-    for idx, (doc, metadata) in enumerate(
-        zip(results["documents"][0], results["metadatas"][0]), start=1
-    ):
-        print("---")
-        print(f"[{idx}] sumber: {metadata.get('source')} chunk: {metadata.get('chunk')}")
-        print(doc)
+    print(f"\n🔎 Top {top_k} hasil pencarian vektor di '{collection_name}' untuk: '{query}'")
+    print("-" * 70)
+    for index, (doc, meta) in enumerate(zip(results["documents"][0], results["metadatas"][0]), start=1):
+        source = meta.get("source", "-")
+        chunk = meta.get("chunk", "-")
+        print(f"[{index}] Sumber: {source} (Chunk: {chunk})")
+        snippet = doc[:300] + ("..." if len(doc) > 300 else "")
+        print(f"    {snippet}\n")
 
 
 def main() -> None:
-    parser = argparse.ArgumentParser(
-        description="Chroma local tool untuk ingest dan query dokumen HRD"
-    )
+    parser = argparse.ArgumentParser(description="Tool vector store lokal berbasis Chroma")
     subparsers = parser.add_subparsers(dest="command", required=True)
 
-    ingest_parser = subparsers.add_parser("ingest", help="Ingest seluruh file Markdown ke Chroma")
+    ingest_parser = subparsers.add_parser("ingest", help="Ingest seluruh dokumen dan korpus pelatihan")
     ingest_parser.add_argument(
-        "--docs", default="hrd-docs", help="Folder dokumen HRD"
-    )
-    ingest_parser.add_argument(
-        "--chunk-size", type=int, default=700, help="Ukuran maksimum token per chunk"
-    )
-    ingest_parser.add_argument(
-        "--overlap", type=int, default=100, help="Overlap token antar chunk"
+        "--docs",
+        type=Path,
+        default=Path("hrd-docs"),
+        help="Folder dokumen sumber (default: hrd-docs)",
     )
 
-    query_parser = subparsers.add_parser("query", help="Query local Chroma collection")
-    query_parser.add_argument("query", help="Query yang ingin dijalankan")
-    query_parser.add_argument("--top-k", type=int, default=5, help="Jumlah hasil teratas")
+    query_parser = subparsers.add_parser("query", help="Cari dokumen relevan dengan query")
+    query_parser.add_argument("query", type=str, help="Teks query pencarian")
+    query_parser.add_argument(
+        "--collection",
+        type=str,
+        default=COLLECTION_HRD,
+        choices=[COLLECTION_HRD, COLLECTION_MRC],
+        help=f"Target collection (default: {COLLECTION_HRD})",
+    )
+    query_parser.add_argument(
+        "--top-k",
+        type=int,
+        default=3,
+        help="Jumlah hasil teratas yang ditampilkan (default: 3)",
+    )
 
     args = parser.parse_args()
 
     if args.command == "ingest":
-        ingest_docs(Path(args.docs), args.chunk_size, args.overlap)
+        ingest_all(args.docs)
     elif args.command == "query":
-        query_docs(args.query, args.top_k)
+        query_docs(args.query, collection_name=args.collection, top_k=args.top_k)
 
 
 if __name__ == "__main__":
