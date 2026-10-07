@@ -21,8 +21,9 @@ RUN python -m spacy download en_core_web_lg || true
 # Copy project files
 COPY . .
 
-# Expose Streamlit port
-EXPOSE 8501
+# Expose port for Google Cloud Run
+EXPOSE 8080
+ENV PORT=8080
 
-# Command default untuk validasi evaluasi
-CMD ["python", "q1_benchmark_suite.py"]
+# Command default untuk Google Cloud Run 3D Showcase & Health Probe
+CMD ["python", "server.py"]

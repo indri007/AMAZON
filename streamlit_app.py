@@ -182,6 +182,13 @@ with left_col:
         unsafe_allow_html=True,
     )
     st.markdown("<hr style='border-color: #C7CAD0; margin: 18px 0;'>", unsafe_allow_html=True)
+    st.markdown("<div class='sidebar-title'>🌌 3D Orchestration</div>", unsafe_allow_html=True)
+    st.markdown(
+        "<div class='sidebar-text'>Visualisasi 3D WebGL Multi-Agent Network, ARM64 Bitmask Register, dan Benchmark Telemetry.</div>",
+        unsafe_allow_html=True,
+    )
+    st.link_button("🚀 Buka 3D Architecture Showcase", "https://github.com/indri007/AMAZON/blob/main/showcase/index.html", use_container_width=True)
+    st.markdown("<hr style='border-color: #C7CAD0; margin: 18px 0;'>", unsafe_allow_html=True)
     st.markdown("<div class='sidebar-title'>💡 Contoh pertanyaan</div>", unsafe_allow_html=True)
 
     examples = [

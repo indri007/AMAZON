@@ -25,6 +25,7 @@ Enterprise-grade **Autonomous Multi-Agent Zero-Shot Orchestration** and **Retrie
 
 | Resource | Target / URL | Status |
 |---|---|---|
+| **3D Architecture Showcase (Interactive UI/UX)** | [`showcase/index.html`](file:///Users/jevin/HRD/langflow-bob/showcase/index.html) | Ready (WebGL / Three.js) |
 | **Streamlit App (Interactive Web UI)** | [indri007-langflow-bob.streamlit.app](https://indri007-langflow-bob.streamlit.app) | Production |
 | **Langflow Microservice (Cloud Run)** | `https://langflow-192433070716.asia-southeast2.run.app` | Active (`asia-southeast2`) |
 | **GitHub Repository** | [github.com/indri007/AMAZON](https://github.com/indri007/AMAZON) | Main Branch |
@@ -84,11 +85,15 @@ AMAZON/
 ├── reports/                            # Generated audit & benchmark reports
 │   ├── AMAZON_AUDIT.json               # Structured audit output
 │   └── AMAZON_AUDIT.md                 # Markdown audit report
+├── showcase/                           # Standalone 3D WebGL Multi-Agent Showcase
+│   └── index.html                      # Three.js 3D Orchestration UI/UX
 ├── .bob/
 │   ├── mcp.json                        # MCP server definitions
 │   └── mcp.json.example                # MCP template configuration
+├── server.py                           # Cloud Run HTTP & Telemetry Server
 ├── angsuran_bitmask.py                 # Backward-compatibility re-export wrapper
 ├── streamlit_app.py                    # Streamlit interactive application
+├── Dockerfile                          # Cloud Run container definition (Port 8080)
 ├── requirements.txt                    # Project dependencies
 └── README.md                           # Documentation root
 ```
@@ -214,6 +219,32 @@ Generates detailed audit logs and scoring summary in `reports/AMAZON_AUDIT.md` a
 ### Running the Benchmark Suite
 ```bash
 python3 benchmarks/q1_benchmark_suite.py
+```
+
+### Running 3D Architecture Showcase Locally
+```bash
+python3 server.py
+# Buka di browser: http://localhost:8080 (atau buka langsung file showcase/index.html)
+```
+
+### Deploy ke Google Cloud Run (via Cloud Shell)
+Jalankan langkah ini langsung di terminal **Google Cloud Shell** (`g25067020011@cloudshell:~$`):
+
+```bash
+# 1. Cek & pilih project Google Cloud Anda
+gcloud projects list
+gcloud config set project [PROJECT_ID_ANDA]
+
+# 2. Clone repository AMAZON & masuk ke direktori
+git clone https://github.com/indri007/AMAZON.git
+cd AMAZON
+
+# 3. Deploy langsung ke Cloud Run
+gcloud run deploy amazon-showcase \
+  --source . \
+  --region asia-southeast2 \
+  --allow-unauthenticated \
+  --port 8080
 ```
 
 ### Running Streamlit Locally

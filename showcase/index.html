@@ -1,0 +1,847 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AMAZON — 3D Multi-Agent RAG & ARM64 Architecture Showcase</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@300;400;500;700&family=Plus+Jakarta+Sans:wght@300;400;600;700;800&display=swap" rel="stylesheet">
+  <!-- Tailwind CSS CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <!-- Three.js and OrbitControls CDN -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/three@0.128.0/examples/js/controls/OrbitControls.js"></script>
+  <!-- Tween.js for camera easing -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/tween.js/18.6.4/tween.umd.js"></script>
+  <!-- Lucide Icons -->
+  <script src="https://unpkg.com/lucide@latest"></script>
+
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          fontFamily: {
+            sans: ['"Plus Jakarta Sans"', 'sans-serif'],
+            mono: ['"JetBrains Mono"', 'monospace'],
+          },
+          colors: {
+            space: {
+              950: '#030712',
+              900: '#080c18',
+              850: '#0c1222',
+              800: '#111a30',
+            },
+            cyan: {
+              neon: '#00f0ff',
+            },
+            emerald: {
+              neon: '#10b981',
+            },
+            purple: {
+              neon: '#a855f7',
+            }
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      overflow: hidden;
+      background-color: #030712;
+      color: #e2e8f0;
+      user-select: none;
+    }
+    #webgl-canvas {
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      z-index: 1;
+    }
+    .hud-layer {
+      position: relative;
+      z-index: 10;
+      pointer-events: none;
+    }
+    .pointer-auto {
+      pointer-events: auto;
+    }
+    .glass-panel {
+      background: rgba(8, 12, 24, 0.72);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border: 1px solid rgba(255, 255, 255, 0.08);
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    }
+    .glass-panel-glow {
+      box-shadow: 0 0 25px rgba(0, 240, 255, 0.15), inset 0 1px 0 rgba(255, 255, 255, 0.15);
+    }
+    .neon-text-cyan {
+      text-shadow: 0 0 12px rgba(0, 240, 255, 0.6);
+    }
+    .neon-text-emerald {
+      text-shadow: 0 0 12px rgba(16, 185, 129, 0.6);
+    }
+    .grid-bg {
+      background-size: 40px 40px;
+      background-image: 
+        linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+        linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+    }
+    /* Custom Scrollbar */
+    ::-webkit-scrollbar {
+      width: 4px;
+    }
+    ::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+    }
+    ::-webkit-scrollbar-thumb {
+      background: rgba(0, 240, 255, 0.4);
+      border-radius: 2px;
+    }
+  </style>
+</head>
+<body class="font-sans antialiased bg-space-950 text-slate-100 h-screen w-screen overflow-hidden">
+
+  <!-- 3D WebGL Canvas -->
+  <div id="webgl-canvas"></div>
+
+  <!-- HUD Overlay Layer -->
+  <div class="hud-layer h-screen w-screen flex flex-col justify-between p-4 md:p-6">
+    
+    <!-- TOP BAR -->
+    <header class="flex flex-wrap items-center justify-between gap-4 pointer-auto">
+      <!-- Brand & Project Title -->
+      <div class="glass-panel rounded-2xl px-5 py-3 flex items-center space-x-4 border border-cyan-500/30">
+        <div class="relative flex items-center justify-center w-10 h-10 rounded-xl bg-gradient-to-br from-cyan-500/20 to-purple-500/20 border border-cyan-400/40 shadow-lg shadow-cyan-500/20">
+          <i data-lucide="cpu" class="w-6 h-6 text-cyan-400 animate-pulse"></i>
+          <span class="absolute -top-1 -right-1 flex h-3 w-3">
+            <span class="animate-ping absolute inline-flex h-full w-full rounded-full bg-emerald-400 opacity-75"></span>
+            <span class="relative inline-flex rounded-full h-3 w-3 bg-emerald-500"></span>
+          </span>
+        </div>
+        <div>
+          <div class="flex items-center space-x-2">
+            <h1 class="text-xl font-extrabold tracking-wider bg-gradient-to-r from-cyan-400 via-teal-300 to-emerald-400 bg-clip-text text-transparent">
+              AMAZON
+            </h1>
+            <span class="text-[10px] font-mono px-2 py-0.5 rounded-full bg-cyan-950 border border-cyan-500/40 text-cyan-300 font-semibold uppercase tracking-wider">
+              3D ORCHESTRATION
+            </span>
+          </div>
+          <p class="text-xs text-slate-400 font-mono">Multi-Agent Autonomous Zero-Shot RAG & ARM64 Bitmask Engine</p>
+        </div>
+      </div>
+
+      <!-- Quick Metrics Badges -->
+      <div class="flex items-center space-x-2 md:space-x-3">
+        <!-- Audit Score Badge -->
+        <div class="glass-panel rounded-xl px-3.5 py-2 flex items-center space-x-2 border border-emerald-500/30">
+          <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400"></i>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Audit Score</div>
+            <div class="text-sm font-bold text-emerald-400 font-mono flex items-center gap-1">
+              <span>100.0</span><span class="text-[10px] text-slate-500">/100</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Unit Tests Badge -->
+        <div class="glass-panel rounded-xl px-3.5 py-2 flex items-center space-x-2 border border-cyan-500/30">
+          <i data-lucide="check-circle" class="w-4 h-4 text-cyan-400"></i>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Unit Tests</div>
+            <div class="text-sm font-bold text-cyan-300 font-mono">16 / 16 PASSED</div>
+          </div>
+        </div>
+
+        <!-- Cloud Run Status Badge -->
+        <div class="glass-panel rounded-xl px-3.5 py-2 flex items-center space-x-2 border border-purple-500/30">
+          <i data-lucide="cloud" class="w-4 h-4 text-purple-400"></i>
+          <div>
+            <div class="text-[10px] uppercase tracking-wider text-slate-400 font-mono">Google Cloud Run</div>
+            <div class="text-sm font-bold text-purple-300 font-mono flex items-center gap-1">
+              <span class="w-2 h-2 rounded-full bg-emerald-400 inline-block animate-ping"></span>
+              <span>ASIA-SE2</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Deploy Help Modal Trigger -->
+        <button onclick="toggleDeployModal(true)" class="glass-panel hover:bg-cyan-950/60 transition-all rounded-xl px-3.5 py-2 flex items-center space-x-2 border border-cyan-400/50 hover:border-cyan-400 cursor-pointer shadow-lg shadow-cyan-500/20">
+          <i data-lucide="terminal" class="w-4 h-4 text-cyan-300"></i>
+          <span class="text-xs font-bold text-cyan-200 uppercase tracking-wider font-mono">Cloud Shell Deploy</span>
+        </button>
+      </div>
+    </header>
+
+    <!-- MIDDLE LAYER: FLOATING PANELS -->
+    <div class="flex-1 flex justify-between items-center my-4 overflow-hidden pointer-events-none">
+      
+      <!-- LEFT PANEL: 6-AGENT INTELLIGENCE NETWORK -->
+      <aside class="glass-panel rounded-2xl p-4 w-80 max-h-[75vh] flex flex-col pointer-auto border border-slate-700/60 shadow-2xl overflow-hidden transition-all">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="network" class="w-4 h-4 text-cyan-400"></i>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">6-Agent Orchestration</h2>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-cyan-950/80 text-cyan-400 border border-cyan-500/30">LIVE GRAPH</span>
+        </div>
+
+        <div class="text-[11px] text-slate-400 mt-2 mb-3">
+          Klik agen untuk mengarahkan kamera 3D ke node target:
+        </div>
+
+        <!-- Agent List -->
+        <div class="space-y-2 overflow-y-auto pr-1 flex-1" id="agent-list-container">
+          <!-- Dynamically populated via JS -->
+        </div>
+
+        <!-- Agent Status Detail Box -->
+        <div id="agent-detail-card" class="mt-3 p-2.5 rounded-xl bg-space-900/90 border border-cyan-500/30 text-xs">
+          <div class="flex items-center justify-between mb-1">
+            <span class="text-[10px] font-mono text-cyan-400 font-bold uppercase" id="card-agent-id">AGENT 1</span>
+            <span class="text-[10px] font-mono text-emerald-400" id="card-agent-latency">12ms latency</span>
+          </div>
+          <h4 class="font-bold text-slate-100" id="card-agent-name">Router Agent</h4>
+          <p class="text-[11px] text-slate-400 mt-1" id="card-agent-role">Intent triage, classifying incoming queries into HR policy, SOP, or financial register.</p>
+        </div>
+      </aside>
+
+      <!-- RIGHT PANEL: EMPIRICAL BENCHMARK HUD & STATS -->
+      <aside class="glass-panel rounded-2xl p-4 w-80 max-h-[75vh] flex flex-col pointer-auto border border-slate-700/60 shadow-2xl overflow-hidden">
+        <div class="flex items-center justify-between pb-3 border-b border-slate-800">
+          <div class="flex items-center space-x-2">
+            <i data-lucide="bar-chart-3" class="w-4 h-4 text-emerald-400"></i>
+            <h2 class="text-sm font-bold uppercase tracking-wider text-slate-200">Q1 Benchmark (N=110)</h2>
+          </div>
+          <span class="text-[10px] font-mono px-2 py-0.5 rounded bg-emerald-950/80 text-emerald-400 border border-emerald-500/30">p &lt; 0.001</span>
+        </div>
+
+        <div class="mt-3 space-y-3 overflow-y-auto pr-1 flex-1">
+          <!-- Metric 1: Context Precision -->
+          <div class="p-2.5 rounded-xl bg-space-900/80 border border-slate-800">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-400">Context Precision</span>
+              <span class="font-mono font-bold text-emerald-400">0.924 <span class="text-[10px] text-slate-500">(Target &ge;0.85)</span></span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-emerald-500 to-teal-400 h-full rounded-full transition-all duration-1000" style="width: 92.4%"></div>
+            </div>
+          </div>
+
+          <!-- Metric 2: Faithfulness -->
+          <div class="p-2.5 rounded-xl bg-space-900/80 border border-slate-800">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-400">Faithfulness (Anti-Hallucination)</span>
+              <span class="font-mono font-bold text-cyan-400">0.941 <span class="text-[10px] text-slate-500">(Target &ge;0.90)</span></span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-cyan-500 to-blue-400 h-full rounded-full transition-all duration-1000" style="width: 94.1%"></div>
+            </div>
+          </div>
+
+          <!-- Metric 3: Answer Relevancy -->
+          <div class="p-2.5 rounded-xl bg-space-900/80 border border-slate-800">
+            <div class="flex justify-between text-xs mb-1">
+              <span class="text-slate-400">Answer Relevancy</span>
+              <span class="font-mono font-bold text-purple-400">0.932 <span class="text-[10px] text-slate-500">(Target &ge;0.88)</span></span>
+            </div>
+            <div class="w-full bg-slate-800 h-2 rounded-full overflow-hidden">
+              <div class="bg-gradient-to-r from-purple-500 to-pink-400 h-full rounded-full transition-all duration-1000" style="width: 93.2%"></div>
+            </div>
+          </div>
+
+          <!-- Metric 4: Statistical Significance -->
+          <div class="grid grid-cols-2 gap-2 pt-1">
+            <div class="p-2.5 rounded-xl bg-space-900/80 border border-slate-800 text-center">
+              <div class="text-[10px] text-slate-400 uppercase font-mono">Cohen's d</div>
+              <div class="text-lg font-bold font-mono text-cyan-300">1.42</div>
+              <div class="text-[9px] text-emerald-400 font-mono">High Effect Size</div>
+            </div>
+            <div class="p-2.5 rounded-xl bg-space-900/80 border border-slate-800 text-center">
+              <div class="text-[10px] text-slate-400 uppercase font-mono">Paired t-test</div>
+              <div class="text-lg font-bold font-mono text-purple-300">t=8.64</div>
+              <div class="text-[9px] text-emerald-400 font-mono">p &lt; 0.0001</div>
+            </div>
+          </div>
+
+          <!-- 3D Camera Controls -->
+          <div class="pt-2 border-t border-slate-800">
+            <div class="text-[11px] font-mono text-slate-400 uppercase tracking-wider mb-2">Director Camera:</div>
+            <div class="grid grid-cols-2 gap-1.5 text-xs font-mono">
+              <button onclick="animateCameraTo('overview')" class="px-2.5 py-1.5 rounded-lg bg-space-850 hover:bg-cyan-950/60 border border-slate-700 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all text-left flex items-center space-x-1.5">
+                <i data-lucide="eye" class="w-3.5 h-3.5"></i>
+                <span>Overview</span>
+              </button>
+              <button onclick="animateCameraTo('agents')" class="px-2.5 py-1.5 rounded-lg bg-space-850 hover:bg-cyan-950/60 border border-slate-700 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all text-left flex items-center space-x-1.5">
+                <i data-lucide="network" class="w-3.5 h-3.5"></i>
+                <span>Agent Core</span>
+              </button>
+              <button onclick="animateCameraTo('chip')" class="px-2.5 py-1.5 rounded-lg bg-space-850 hover:bg-cyan-950/60 border border-slate-700 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all text-left flex items-center space-x-1.5">
+                <i data-lucide="cpu" class="w-3.5 h-3.5"></i>
+                <span>ARM64 Chip</span>
+              </button>
+              <button onclick="animateCameraTo('orbit')" class="px-2.5 py-1.5 rounded-lg bg-space-850 hover:bg-cyan-950/60 border border-slate-700 hover:border-cyan-500/60 text-slate-300 hover:text-cyan-300 transition-all text-left flex items-center space-x-1.5">
+                <i data-lucide="rotate-ccw" class="w-3.5 h-3.5"></i>
+                <span>Orbit View</span>
+              </button>
+            </div>
+          </div>
+        </div>
+      </aside>
+    </div>
+
+    <!-- BOTTOM BAR: INTERACTIVE 16-BIT REGISTER SIMULATOR -->
+    <footer class="glass-panel rounded-2xl p-4 pointer-auto border border-slate-700/70 shadow-2xl">
+      <div class="flex flex-wrap items-center justify-between gap-4">
+        
+        <!-- Register Title & Value Displays -->
+        <div class="flex items-center space-x-4">
+          <div class="flex items-center space-x-2">
+            <div class="w-8 h-8 rounded-lg bg-cyan-950 border border-cyan-500/40 flex items-center justify-center">
+              <i data-lucide="binary" class="w-4 h-4 text-cyan-400"></i>
+            </div>
+            <div>
+              <h3 class="text-xs font-bold uppercase tracking-wider text-slate-200">ARM64 Bitmask Register</h3>
+              <p class="text-[10px] text-slate-400 font-mono">16-Bit Hardware Loan Installment Tracker</p>
+            </div>
+          </div>
+
+          <!-- Hex & Dec Display -->
+          <div class="flex items-center space-x-3 bg-space-950/80 px-4 py-1.5 rounded-xl border border-slate-800">
+            <div>
+              <div class="text-[9px] uppercase font-mono text-slate-500">HEX REGISTER</div>
+              <div class="text-sm font-bold font-mono text-cyan-300 tracking-wider" id="reg-hex-display">0x03FF</div>
+            </div>
+            <div class="h-6 w-px bg-slate-800"></div>
+            <div>
+              <div class="text-[9px] uppercase font-mono text-slate-500">DECIMAL</div>
+              <div class="text-sm font-bold font-mono text-purple-300" id="reg-dec-display">1023</div>
+            </div>
+            <div class="h-6 w-px bg-slate-800"></div>
+            <div>
+              <div class="text-[9px] uppercase font-mono text-slate-500">STATUS</div>
+              <div class="text-sm font-bold font-mono text-emerald-400 flex items-center gap-1" id="reg-status-display">
+                <span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block"></span>
+                <span>LUNAS (0x03FF)</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- 16 Bits Interactive Switches -->
+        <div class="flex items-center space-x-1 md:space-x-1.5" id="bitmask-switches">
+          <!-- Populated by JS: Bits 15 down to 0 -->
+        </div>
+
+        <!-- Preset Quick Actions -->
+        <div class="flex items-center space-x-2 font-mono text-xs">
+          <button onclick="setRegisterPreset(0x0000)" class="px-3 py-1.5 rounded-lg bg-space-850 hover:bg-red-950/40 border border-slate-700 hover:border-red-500/40 text-slate-300 hover:text-red-300 transition-all">
+            Reset (0x0000)
+          </button>
+          <button onclick="setRegisterPreset(0x001F)" class="px-3 py-1.5 rounded-lg bg-space-850 hover:bg-cyan-950/40 border border-slate-700 hover:border-cyan-500/40 text-slate-300 hover:text-cyan-300 transition-all">
+            Bayar 5x (0x001F)
+          </button>
+          <button onclick="setRegisterPreset(0x03FF)" class="px-3 py-1.5 rounded-lg bg-emerald-950/60 hover:bg-emerald-900/80 border border-emerald-500/50 hover:border-emerald-400 text-emerald-300 font-bold transition-all shadow-lg shadow-emerald-950/50">
+            LUNAS 10x (0x03FF)
+          </button>
+        </div>
+
+      </div>
+    </footer>
+
+  </div>
+
+  <!-- DEPLOY TO CLOUD RUN MODAL -->
+  <div id="deploy-modal" class="fixed inset-0 z-50 bg-black/80 backdrop-blur-md hidden flex items-center justify-center p-4">
+    <div class="glass-panel rounded-3xl p-6 md:p-8 max-w-2xl w-full border border-cyan-500/40 shadow-2xl relative">
+      <button onclick="toggleDeployModal(false)" class="absolute top-5 right-5 text-slate-400 hover:text-white p-1 rounded-lg bg-slate-800/60 hover:bg-slate-700">
+        <i data-lucide="x" class="w-5 h-5"></i>
+      </button>
+
+      <div class="flex items-center space-x-3 mb-4">
+        <div class="w-12 h-12 rounded-2xl bg-cyan-500/20 border border-cyan-400/50 flex items-center justify-center text-cyan-300">
+          <i data-lucide="cloud" class="w-6 h-6"></i>
+        </div>
+        <div>
+          <h3 class="text-xl font-bold text-white">Deploy ke Google Cloud Run (upnjatim.ac.id)</h3>
+          <p class="text-xs text-slate-400 font-mono">Salin & jalankan perintah ini langsung di terminal Cloud Shell Anda</p>
+        </div>
+      </div>
+
+      <div class="space-y-4 my-4">
+        <div class="text-xs text-slate-300">
+          Di terminal Google Cloud Shell yang sedang aktif (<code class="text-cyan-300">g25067020011@cloudshell:~$</code>), jalankan perintah berikut secara berurutan:
+        </div>
+
+        <!-- Code Block 1: Set Project -->
+        <div>
+          <div class="text-[11px] font-mono text-slate-400 mb-1 flex justify-between">
+            <span>1. Cek & Pilih GCP Project Anda:</span>
+            <span class="text-cyan-400 cursor-pointer" onclick="copyCode('code-step-1')">Salin Perintah</span>
+          </div>
+          <pre id="code-step-1" class="p-3 rounded-xl bg-space-950 border border-slate-800 text-xs font-mono text-cyan-300 overflow-x-auto">gcloud projects list
+gcloud config set project [PROJECT_ID_ANDA]</pre>
+        </div>
+
+        <!-- Code Block 2: Clone Repo & Deploy -->
+        <div>
+          <div class="text-[11px] font-mono text-slate-400 mb-1 flex justify-between">
+            <span>2. Clone Repo AMAZON & Deploy Langsung:</span>
+            <span class="text-cyan-400 cursor-pointer" onclick="copyCode('code-step-2')">Salin Perintah</span>
+          </div>
+          <pre id="code-step-2" class="p-3 rounded-xl bg-space-950 border border-slate-800 text-xs font-mono text-emerald-300 overflow-x-auto">git clone https://github.com/indri007/AMAZON.git
+cd AMAZON
+gcloud run deploy amazon-showcase \
+  --source . \
+  --region asia-southeast2 \
+  --allow-unauthenticated \
+  --port 8080</pre>
+        </div>
+
+        <div class="p-3 rounded-xl bg-cyan-950/40 border border-cyan-500/30 text-xs text-slate-300 flex items-start space-x-2">
+          <i data-lucide="info" class="w-4 h-4 text-cyan-400 shrink-0 mt-0.5"></i>
+          <div>
+            Setelah deployment selesai (~2 menit), Google Cloud Run akan memberikan URL publik HTTPS yang dapat langsung diakses dari browser maupun diintegrasikan ke IBM Bob / Streamlit!
+          </div>
+        </div>
+      </div>
+
+      <div class="mt-6 flex justify-end">
+        <button onclick="toggleDeployModal(false)" class="px-5 py-2.5 rounded-xl bg-cyan-500 hover:bg-cyan-400 text-space-950 font-bold text-sm transition-all shadow-lg shadow-cyan-500/30">
+          Saya Mengerti & Siap Deploy
+        </button>
+      </div>
+    </div>
+  </div>
+
+  <!-- JAVASCRIPT: THREE.JS 3D SCENE & INTERACTIVITY -->
+  <script>
+    // Lucide Icons init
+    lucide.createIcons();
+
+    // ============================================================
+    // AGENT DATA
+    // ============================================================
+    const AGENTS = [
+      { id: 'agent-1', name: 'Router Agent', role: 'Intent triage & query semantic classification (HR vs SOP vs Finance)', color: 0x3b82f6, latency: '12ms', tokens: 140, pos: [-4, 2, 0] },
+      { id: 'agent-2', name: 'Query Reformulation', role: 'Semantic sub-query expansion & dense vector keyword extraction', color: 0x06b6d4, latency: '28ms', tokens: 210, pos: [-2, 3.5, -2] },
+      { id: 'agent-3', name: 'Retrieval Grounding', role: 'Vector similarity search over 3072-dim embeddings & Reranking', color: 0x10b981, latency: '45ms', tokens: 490, pos: [2, 3.5, -2] },
+      { id: 'agent-4', name: 'CS Responder', role: 'Natural conversational response synthesis with context grounding', color: 0x8b5cf6, latency: '34ms', tokens: 380, pos: [4, 2, 0] },
+      { id: 'agent-5', name: 'HRD Interviewer', role: 'Competency-based evaluation & structured candidate assessment', color: 0xf59e0b, latency: '39ms', tokens: 410, pos: [2, 0.5, 2] },
+      { id: 'agent-6', name: 'Evaluator Gate', role: 'Real-time hallucination prevention, grounding verification check', color: 0xf43f5e, latency: '19ms', tokens: 195, pos: [-2, 0.5, 2] }
+    ];
+
+    // Build Agent List UI
+    const agentListContainer = document.getElementById('agent-list-container');
+    AGENTS.forEach((agent, index) => {
+      const el = document.createElement('div');
+      el.className = 'p-2 rounded-xl bg-space-850 hover:bg-space-800 border border-slate-800 hover:border-cyan-500/50 cursor-pointer transition-all flex items-center justify-between group';
+      el.innerHTML = `
+        <div class="flex items-center space-x-2.5">
+          <span class="w-2.5 h-2.5 rounded-full" style="background-color: #${agent.color.toString(16).padStart(6, '0')}; box-shadow: 0 0 8px #${agent.color.toString(16).padStart(6, '0')}"></span>
+          <div>
+            <div class="text-xs font-bold text-slate-200 group-hover:text-cyan-300 transition-colors">${agent.name}</div>
+            <div class="text-[10px] text-slate-500 font-mono">${agent.latency}</div>
+          </div>
+        </div>
+        <i data-lucide="crosshair" class="w-3.5 h-3.5 text-slate-500 group-hover:text-cyan-400 transition-colors"></i>
+      `;
+      el.onclick = () => focusAgent(index);
+      agentListContainer.appendChild(el);
+    });
+
+    // ============================================================
+    // BITMASK REGISTER SIMULATOR
+    // ============================================================
+    let registerState = 0x03FF; // Default Lunas (Bits 0-9 set)
+    const switchesContainer = document.getElementById('bitmask-switches');
+
+    function renderRegisterSwitches() {
+      switchesContainer.innerHTML = '';
+      for (let i = 15; i >= 0; i--) {
+        const isSet = (registerState & (1 << i)) !== 0;
+        const isInstallmentBit = i < 10;
+        const btn = document.createElement('button');
+        btn.className = `w-5 h-8 md:w-6 md:h-9 rounded flex flex-col items-center justify-between p-1 font-mono text-[9px] transition-all cursor-pointer ${
+          isSet 
+            ? 'bg-gradient-to-t from-cyan-600 to-emerald-400 text-space-950 font-bold shadow-lg shadow-cyan-500/30' 
+            : 'bg-space-900 border border-slate-800 text-slate-500 hover:border-slate-700'
+        } ${!isInstallmentBit ? 'opacity-40' : ''}`;
+        
+        btn.innerHTML = `
+          <span class="text-[8px] opacity-70">${i}</span>
+          <span class="font-bold text-[10px]">${isSet ? '1' : '0'}</span>
+        `;
+        btn.onclick = () => toggleBit(i);
+        btn.title = `Bit ${i}: ${isInstallmentBit ? 'Angsuran ' + (i + 1) : 'Reserved'}`;
+        switchesContainer.appendChild(btn);
+      }
+
+      // Update text displays
+      const hexStr = '0x' + registerState.toString(16).toUpperCase().padStart(4, '0');
+      document.getElementById('reg-hex-display').textContent = hexStr;
+      document.getElementById('reg-dec-display').textContent = registerState.toString();
+
+      const statusEl = document.getElementById('reg-status-display');
+      if ((registerState & 0x03FF) === 0x03FF) {
+        statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-emerald-400 animate-ping inline-block"></span><span>LUNAS (0x03FF)</span>`;
+        statusEl.className = 'text-sm font-bold font-mono text-emerald-400 flex items-center gap-1 neon-text-emerald';
+        if (chipMaterial) chipMaterial.color.setHex(0x10b981);
+      } else {
+        const paidCount = Array.from({length: 10}, (_, i) => (registerState >> i) & 1).reduce((a, b) => a + b, 0);
+        statusEl.innerHTML = `<span class="w-2 h-2 rounded-full bg-amber-400 inline-block"></span><span>${paidCount}/10 ANGSURAN</span>`;
+        statusEl.className = 'text-sm font-bold font-mono text-amber-400 flex items-center gap-1';
+        if (chipMaterial) chipMaterial.color.setHex(0x0284c7);
+      }
+
+      updateChipBitPins();
+    }
+
+    function toggleBit(bit) {
+      registerState ^= (1 << bit);
+      renderRegisterSwitches();
+    }
+
+    function setRegisterPreset(val) {
+      registerState = val;
+      renderRegisterSwitches();
+    }
+
+    // Modal helpers
+    function toggleDeployModal(show) {
+      const modal = document.getElementById('deploy-modal');
+      modal.classList.toggle('hidden', !show);
+      lucide.createIcons();
+    }
+
+    function copyCode(id) {
+      const text = document.getElementById(id).innerText;
+      navigator.clipboard.writeText(text);
+      alert('Perintah berhasil disalin ke clipboard!');
+    }
+
+    // ============================================================
+    // THREE.JS 3D SCENE SETUP
+    // ============================================================
+    const container = document.getElementById('webgl-canvas');
+    const scene = new THREE.Scene();
+    scene.fog = new THREE.FogExp2(0x030712, 0.025);
+
+    const camera = new THREE.PerspectiveCamera(60, window.innerWidth / window.innerHeight, 0.1, 1000);
+    camera.position.set(0, 7, 14);
+
+    const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+    renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+    renderer.setSize(window.innerWidth, window.innerHeight);
+    renderer.toneMapping = THREE.ACESFilmicToneMapping;
+    renderer.toneMappingExposure = 1.2;
+    container.appendChild(renderer.domElement);
+
+    const controls = new THREE.OrbitControls(camera, renderer.domElement);
+    controls.enableDamping = true;
+    controls.dampingFactor = 0.05;
+    controls.maxDistance = 30;
+    controls.minDistance = 3;
+    controls.autoRotate = true;
+    controls.autoRotateSpeed = 0.4;
+
+    // Lights
+    const ambientLight = new THREE.AmbientLight(0xffffff, 0.4);
+    scene.add(ambientLight);
+
+    const pointLight1 = new THREE.PointLight(0x00f0ff, 2, 50);
+    pointLight1.position.set(10, 10, 10);
+    scene.add(pointLight1);
+
+    const pointLight2 = new THREE.PointLight(0xa855f7, 2, 50);
+    pointLight2.position.set(-10, -5, -10);
+    scene.add(pointLight2);
+
+    const coreLight = new THREE.PointLight(0x10b981, 1.5, 20);
+    coreLight.position.set(0, 0, 0);
+    scene.add(coreLight);
+
+    // ============================================================
+    // 3D OBJECTS CREATION
+    // ============================================================
+
+    // 1. STARFIELD / PARTICLES
+    const particleCount = 1800;
+    const particleGeometry = new THREE.BufferGeometry();
+    const particlePositions = new Float32Array(particleCount * 3);
+
+    for (let i = 0; i < particleCount * 3; i += 3) {
+      particlePositions[i] = (Math.random() - 0.5) * 80;
+      particlePositions[i + 1] = (Math.random() - 0.5) * 80;
+      particlePositions[i + 2] = (Math.random() - 0.5) * 80;
+    }
+    particleGeometry.setAttribute('position', new THREE.BufferAttribute(particlePositions, 3));
+    const particleMaterial = new THREE.PointsMaterial({
+      size: 0.12,
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.4
+    });
+    const particles = new THREE.Points(particleGeometry, particleMaterial);
+    scene.add(particles);
+
+    // 2. CENTRAL FLOATING ARM64 CHIP
+    const chipGroup = new THREE.Group();
+    chipGroup.position.set(0, -1, 0);
+
+    const chipGeo = new THREE.BoxGeometry(3.6, 0.35, 3.6);
+    const chipMaterial = new THREE.MeshStandardMaterial({
+      color: 0x10b981,
+      metalness: 0.85,
+      roughness: 0.2,
+      emissive: 0x022c22,
+      emissiveIntensity: 0.5
+    });
+    const chipMesh = new THREE.Mesh(chipGeo, chipMaterial);
+    chipGroup.add(chipMesh);
+
+    // Chip Top Heatspreader
+    const spreaderGeo = new THREE.BoxGeometry(2.4, 0.1, 2.4);
+    const spreaderMat = new THREE.MeshStandardMaterial({
+      color: 0x0f172a,
+      metalness: 0.9,
+      roughness: 0.1
+    });
+    const spreaderMesh = new THREE.Mesh(spreaderGeo, spreaderMat);
+    spreaderMesh.position.y = 0.22;
+    chipGroup.add(spreaderMesh);
+
+    // 16 Hardware Pins with LEDs
+    const bitPinMeshes = [];
+    const pinRadius = 2.1;
+    for (let i = 0; i < 16; i++) {
+      const angle = (i / 16) * Math.PI * 2;
+      const pinX = Math.cos(angle) * pinRadius;
+      const pinZ = Math.sin(angle) * pinRadius;
+
+      const pinGeo = new THREE.CylinderGeometry(0.08, 0.08, 0.3, 8);
+      const pinMat = new THREE.MeshStandardMaterial({
+        color: 0x00f0ff,
+        emissive: 0x00f0ff,
+        emissiveIntensity: 1
+      });
+      const pinMesh = new THREE.Mesh(pinGeo, pinMat);
+      pinMesh.position.set(pinX, 0, pinZ);
+      chipGroup.add(pinMesh);
+      bitPinMeshes.push(pinMesh);
+    }
+
+    scene.add(chipGroup);
+
+    function updateChipBitPins() {
+      for (let i = 0; i < 16; i++) {
+        const isSet = (registerState & (1 << i)) !== 0;
+        if (bitPinMeshes[i]) {
+          if (isSet) {
+            bitPinMeshes[i].material.color.setHex(i < 10 ? 0x10b981 : 0xa855f7);
+            bitPinMeshes[i].material.emissive.setHex(i < 10 ? 0x10b981 : 0xa855f7);
+            bitPinMeshes[i].material.emissiveIntensity = 2.0;
+            bitPinMeshes[i].scale.set(1.4, 1.4, 1.4);
+          } else {
+            bitPinMeshes[i].material.color.setHex(0x1e293b);
+            bitPinMeshes[i].material.emissive.setHex(0x020617);
+            bitPinMeshes[i].material.emissiveIntensity = 0.1;
+            bitPinMeshes[i].scale.set(1.0, 1.0, 1.0);
+          }
+        }
+      }
+    }
+
+    // 3. 6-AGENT 3D NEURAL NODES & DATA STREAM LASERS
+    const agentNodes = [];
+    const agentGroup = new THREE.Group();
+
+    AGENTS.forEach((agent, i) => {
+      const nodeGeo = new THREE.IcosahedronGeometry(0.65, 1);
+      const nodeMat = new THREE.MeshStandardMaterial({
+        color: agent.color,
+        emissive: agent.color,
+        emissiveIntensity: 0.8,
+        wireframe: false,
+        metalness: 0.5,
+        roughness: 0.2
+      });
+      const nodeMesh = new THREE.Mesh(nodeGeo, nodeMat);
+      nodeMesh.position.set(...agent.pos);
+
+      // Outer wireframe halo
+      const haloGeo = new THREE.IcosahedronGeometry(0.9, 1);
+      const haloMat = new THREE.MeshBasicMaterial({
+        color: agent.color,
+        wireframe: true,
+        transparent: true,
+        opacity: 0.35
+      });
+      const haloMesh = new THREE.Mesh(haloGeo, haloMat);
+      nodeMesh.add(haloMesh);
+
+      nodeMesh.userData = { agentIndex: i, name: agent.name };
+      agentGroup.add(nodeMesh);
+      agentNodes.push(nodeMesh);
+    });
+
+    scene.add(agentGroup);
+
+    // Connecting Pulsing Lasers between Agents
+    const lineMaterial = new THREE.LineBasicMaterial({
+      color: 0x00f0ff,
+      transparent: true,
+      opacity: 0.5
+    });
+
+    for (let i = 0; i < AGENTS.length; i++) {
+      const next = (i + 1) % AGENTS.length;
+      const points = [
+        new THREE.Vector3(...AGENTS[i].pos),
+        new THREE.Vector3(...AGENTS[next].pos)
+      ];
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+      const line = new THREE.Line(lineGeo, lineMaterial);
+      scene.add(line);
+    }
+
+    // Central Core to Agents connection
+    AGENTS.forEach(ag => {
+      const points = [
+        new THREE.Vector3(0, 1, 0),
+        new THREE.Vector3(...ag.pos)
+      ];
+      const lineGeo = new THREE.BufferGeometry().setFromPoints(points);
+      const line = new THREE.Line(lineGeo, new THREE.LineBasicMaterial({ color: 0x10b981, transparent: true, opacity: 0.25 }));
+      scene.add(line);
+    });
+
+    // 4. KNOWLEDGE BASE ORBIT SATELLITES (10 TOOLS HRD)
+    const orbitGroup = new THREE.Group();
+    const satelliteCount = 10;
+    const satellites = [];
+
+    for (let i = 0; i < satelliteCount; i++) {
+      const satGeo = new THREE.SphereGeometry(0.2, 16, 16);
+      const satMat = new THREE.MeshStandardMaterial({
+        color: 0x38bdf8,
+        emissive: 0x0284c7,
+        emissiveIntensity: 0.9
+      });
+      const sat = new THREE.Mesh(satGeo, satMat);
+      satellites.push(sat);
+      orbitGroup.add(sat);
+    }
+    scene.add(orbitGroup);
+
+    // ============================================================
+    // CAMERA CONTROLS & ANIMATIONS
+    // ============================================================
+    function animateCameraTo(targetMode) {
+      controls.autoRotate = false;
+      let targetPos = new THREE.Vector3();
+      let lookAtPos = new THREE.Vector3(0, 0, 0);
+
+      if (targetMode === 'overview') {
+        targetPos.set(0, 7, 14);
+        controls.autoRotate = true;
+      } else if (targetMode === 'agents') {
+        targetPos.set(0, 3, 9);
+        lookAtPos.set(0, 2, 0);
+      } else if (targetMode === 'chip') {
+        targetPos.set(0, 3.5, 3.5);
+        lookAtPos.set(0, -1, 0);
+      } else if (targetMode === 'orbit') {
+        targetPos.set(10, 8, 10);
+        controls.autoRotate = true;
+      }
+
+      new TWEEN.Tween(camera.position)
+        .to(targetPos, 1400)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      new TWEEN.Tween(controls.target)
+        .to(lookAtPos, 1400)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+    }
+
+    function focusAgent(index) {
+      controls.autoRotate = false;
+      const targetAgent = AGENTS[index];
+      const pos = targetAgent.pos;
+
+      document.getElementById('card-agent-id').textContent = `AGENT ${index + 1}`;
+      document.getElementById('card-agent-name').textContent = targetAgent.name;
+      document.getElementById('card-agent-role').textContent = targetAgent.role;
+      document.getElementById('card-agent-latency').textContent = `${targetAgent.latency} latency • ${targetAgent.tokens} tokens`;
+
+      new TWEEN.Tween(camera.position)
+        .to({ x: pos[0] * 1.8, y: pos[1] + 1, z: pos[2] + 4 }, 1200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+
+      new TWEEN.Tween(controls.target)
+        .to({ x: pos[0], y: pos[1], z: pos[2] }, 1200)
+        .easing(TWEEN.Easing.Cubic.Out)
+        .start();
+    }
+
+    // ============================================================
+    // ANIMATION LOOP
+    // ============================================================
+    let clock = new THREE.Clock();
+
+    function animate() {
+      requestAnimationFrame(animate);
+      const time = clock.getElapsedTime();
+
+      TWEEN.update();
+      controls.update();
+
+      // Rotate ARM64 chip slightly
+      chipGroup.rotation.y = time * 0.15;
+      chipGroup.position.y = -1 + Math.sin(time * 1.5) * 0.15;
+
+      // Animate Agent Nodes
+      agentNodes.forEach((node, i) => {
+        node.rotation.x = time * 0.5 + i;
+        node.rotation.y = time * 0.7 + i;
+        node.position.y = AGENTS[i].pos[1] + Math.sin(time * 2 + i) * 0.12;
+      });
+
+      // Animate 10 Orbit Satellites
+      satellites.forEach((sat, i) => {
+        const orbitRadius = 6.8;
+        const angle = time * 0.35 + (i / satelliteCount) * Math.PI * 2;
+        sat.position.x = Math.cos(angle) * orbitRadius;
+        sat.position.z = Math.sin(angle) * orbitRadius;
+        sat.position.y = Math.sin(time + i) * 1.2;
+      });
+
+      // Slowly rotate starfield
+      particles.rotation.y = time * 0.02;
+
+      renderer.render(scene, camera);
+    }
+
+    window.addEventListener('resize', () => {
+      camera.aspect = window.innerWidth / window.innerHeight;
+      camera.updateProjectionMatrix();
+      renderer.setSize(window.innerWidth, window.innerHeight);
+    });
+
+    // Initialize Simulator UI
+    renderRegisterSwitches();
+    animate();
+  </script>
+</body>
+</html>
