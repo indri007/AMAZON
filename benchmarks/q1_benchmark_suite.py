@@ -10,6 +10,7 @@ Menyelesaikan (SOLVE) seluruh bit kekurangan menuju Status Register 11111111b (0
 import json
 import math
 import random
+from pathlib import Path
 from typing import List, Dict, Any, Tuple
 
 # ── 1. BIT 0: DATASET EXPANDER (Target N >= 100) ─────────────────────────────
@@ -173,7 +174,8 @@ def evaluate_q1_readiness() -> Dict[str, Any]:
 
     # 1. Dataset Expansion
     expanded_ds = generate_expanded_golden_dataset()
-    with open("golden_dataset_expanded_110.json", "w", encoding="utf-8") as f:
+    benchmarks_dir = Path(__file__).parent
+    with open(benchmarks_dir / "golden_dataset_expanded_110.json", "w", encoding="utf-8") as f:
         json.dump(expanded_ds, f, indent=2)
     n_samples = len(expanded_ds)
     bit0 = 1 if n_samples >= 100 else 0
@@ -246,10 +248,10 @@ def evaluate_q1_readiness() -> Dict[str, Any]:
         "dataset_sample_count": n_samples
     }
 
-    with open("q1_publication_report.json", "w", encoding="utf-8") as f:
+    with open(benchmarks_dir / "q1_publication_report.json", "w", encoding="utf-8") as f:
         json.dump(report, f, indent=2)
-    print("✅ Berkas bukti empiris disimpan di: q1_publication_report.json")
-    print("✅ Dataset 110 sampel disimpan di: golden_dataset_expanded_110.json")
+    print("✅ Berkas bukti empiris disimpan di: benchmarks/q1_publication_report.json")
+    print("✅ Dataset 110 sampel disimpan di: benchmarks/golden_dataset_expanded_110.json")
 
     return report
 
