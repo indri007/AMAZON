@@ -13,6 +13,7 @@ from .assessment_center import (
     evaluate_bei_star_response,
 )
 from .report_generator import generate_candidate_assessment_report
+from .pdf_exporter import generate_assessment_pdf_report
 
 __all__ = [
     "calculate_disc_score",
@@ -30,4 +31,5 @@ __all__ = [
     "evaluate_in_basket_decisions",
     "evaluate_bei_star_response",
     "generate_candidate_assessment_report",
+    "generate_assessment_pdf_report",
 ]

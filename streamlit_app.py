@@ -12,6 +12,8 @@ from src.psikologi import (
     IN_BASKET_MEMOS, evaluate_in_basket_decisions,
     evaluate_bei_star_response,
     CASE_ANALYSIS_BLACKBERRY,
+    generate_candidate_assessment_report,
+    generate_assessment_pdf_report,
 )
 
 # ── Page config ──────────────────────────────────────────────────────────────
@@ -234,6 +236,17 @@ if "session_id" not in st.session_state:
     import uuid
     st.session_state.session_id = str(uuid.uuid4())
 
+if "disc_res" not in st.session_state:
+    st.session_state.disc_res = None
+if "mbti_res" not in st.session_state:
+    st.session_state.mbti_res = None
+if "riasec_res" not in st.session_state:
+    st.session_state.riasec_res = None
+if "kraepelin_res" not in st.session_state:
+    st.session_state.kraepelin_res = None
+if "in_basket_res" not in st.session_state:
+    st.session_state.in_basket_res = None
+
 # ── UI Header ────────────────────────────────────────────────────────────────
 st.markdown(
     """
@@ -309,10 +322,11 @@ with left_col:
     st.markdown("</div>", unsafe_allow_html=True)
 
 with right_col:
-    tab_chat, tab_psiko, tab_assessment = st.tabs([
+    tab_chat, tab_psiko, tab_assessment, tab_report = st.tabs([
         "💬 Asisten RAG HRD",
         "🧠 Modul Tes Psikologi",
         "🏢 Simulasi Assessment Center",
+        "📑 Unduh Laporan Resmi (PDF/MD)",
     ])
 
     with tab_chat:
@@ -381,6 +395,7 @@ with right_col:
 
             if st.button("🎯 Analisis Profil DISC Saya", use_container_width=True):
                 res = calculate_disc_score(disc_answers)
+                st.session_state.disc_res = res
                 st.success(f"### Hasil: {res['title']}")
                 st.info(f"**Ringkasan Perilaku Kerja:** {res['summary']}")
                 
@@ -421,6 +436,7 @@ with right_col:
 
             if st.button("🔍 Hitung Tipe MBTI Saya", use_container_width=True):
                 mbti_res = calculate_mbti_score(mbti_answers)
+                st.session_state.mbti_res = mbti_res
                 st.success(f"### Tipe Anda: {mbti_res['mbti_type']} — {mbti_res['archetype']}")
                 st.write(mbti_res["description"])
                 st.markdown("##### 🚀 Rekomendasi Jalur Karier:")
@@ -435,6 +451,7 @@ with right_col:
 
             if st.button("📊 Dapatkan Holland Code Karier", use_container_width=True):
                 riasec_res = calculate_riasec_score(riasec_answers)
+                st.session_state.riasec_res = riasec_res
                 st.success(f"### Holland Code Anda: {riasec_res['holland_code']}")
                 st.info(f"Fokus Utama: **{riasec_res['primary_interest']}** & **{riasec_res['secondary_interest']}**")
                 st.markdown("##### 🎯 Rekomendasi Jabatan Relevan:")
@@ -458,6 +475,7 @@ with right_col:
                     {"attempted": attempted + 3, "correct": attempted + 3 - errors, "errors": errors},
                 ]
                 k_res = evaluate_kraepelin_performance(sim_cols)
+                st.session_state.kraepelin_res = k_res
                 st.info(f"### Status HR: {k_res['hr_recommendation']}")
                 m = k_res["metrics"]
                 st.write(f"- **Kecepatan (Panker):** {m['panker_kecepatan']['value']} ({m['panker_kecepatan']['status']})")
@@ -495,6 +513,7 @@ with right_col:
 
             if st.button("📝 Kumpulkan & Nilai Keputusan In-Basket", use_container_width=True):
                 eval_ib = evaluate_in_basket_decisions(user_in_basket)
+                st.session_state.in_basket_res = eval_ib
                 st.success(f"### Skor In-Basket Anda: {eval_ib['score_out_of_100']} / 100 ({eval_ib['assessment_level']})")
                 for fb in eval_ib["memo_feedbacks"]:
                     st.markdown(f"**{fb['memo_id']} - {fb['subject']}**")
@@ -540,4 +559,86 @@ with right_col:
                         st.markdown(f"- {rec}")
                 else:
                     st.warning("Silakan masukkan teks jawaban kandidat terlebih dahulu.")
+
+    with tab_report:
+        st.markdown("### 📑 Generator Laporan Resmi Asesmen & Psikotes HRD")
+        st.caption("Cetak berkas evaluasi formal ber-kop perusahaan dengan tanda tangan asesor untuk arsip manajemen:")
+
+        col_rep1, col_rep2 = st.columns(2)
+        with col_rep1:
+            cand_name = st.text_input("Nama Lengkap Kandidat:", value="Indri Anjar Kartika Sari")
+        with col_rep2:
+            cand_pos = st.text_input("Posisi / Jabatan yang Dituju:", value="Manager Talent Acquisition & People Ops")
+
+        st.markdown("##### 📌 Komponen Hasil Asesmen:")
+        has_disc = st.session_state.disc_res is not None
+        has_mbti = st.session_state.mbti_res is not None
+        has_riasec = st.session_state.riasec_res is not None
+        has_kraepelin = st.session_state.kraepelin_res is not None
+        has_ib = st.session_state.in_basket_res is not None
+
+        c_t1, c_t2, c_t3, c_t4, c_t5 = st.columns(5)
+        c_t1.metric("DISC", "Terisi ✅" if has_disc else "Standar")
+        c_t2.metric("MBTI", "Terisi ✅" if has_mbti else "Standar")
+        c_t3.metric("RIASEC", "Terisi ✅" if has_riasec else "Standar")
+        c_t4.metric("Kraepelin", "Terisi ✅" if has_kraepelin else "Standar")
+        c_t5.metric("In-Basket", "Terisi ✅" if has_ib else "Standar")
+
+        effective_disc = st.session_state.disc_res or calculate_disc_score(["D", "D", "I", "C", "D", "S"])
+        effective_mbti = st.session_state.mbti_res or calculate_mbti_score({1: "B", 2: "B", 3: "B", 4: "B", 5: "A", 6: "A", 7: "A", 8: "A"})
+        effective_riasec = st.session_state.riasec_res or calculate_riasec_score({1: 3, 2: 5, 3: 2, 4: 4, 5: 5, 6: 3})
+        effective_kraepelin = st.session_state.kraepelin_res or evaluate_kraepelin_performance([
+            {"attempted": 32, "correct": 31, "errors": 1},
+            {"attempted": 34, "correct": 33, "errors": 1},
+            {"attempted": 35, "correct": 35, "errors": 0},
+            {"attempted": 36, "correct": 36, "errors": 0},
+        ])
+        effective_ib = st.session_state.in_basket_res or evaluate_in_basket_decisions([
+            {"memo_id": "MEMO-01", "priority": "High-Urgent", "action_notes": "Koordinasi cepat dengan tim bea cukai."},
+            {"memo_id": "MEMO-02", "priority": "High-Important", "action_notes": "Review KPI tim tepat waktu."},
+        ])
+
+        pdf_bytes = generate_assessment_pdf_report(
+            candidate_name=cand_name,
+            target_position=cand_pos,
+            disc_result=effective_disc,
+            mbti_result=effective_mbti,
+            riasec_result=effective_riasec,
+            kraepelin_result=effective_kraepelin,
+            in_basket_result=effective_ib,
+        )
+
+        full_md_report = generate_candidate_assessment_report(
+            candidate_name=cand_name,
+            target_position=cand_pos,
+            disc_result=effective_disc,
+            mbti_result=effective_mbti,
+            riasec_result=effective_riasec,
+            kraepelin_result=effective_kraepelin,
+            assessment_center_result=effective_ib,
+        )
+
+        st.markdown("<hr style='border-color: #E2E8F0; margin: 16px 0;'>", unsafe_allow_html=True)
+        col_btn1, col_btn2 = st.columns(2)
+        safe_name = cand_name.replace(" ", "_")
+        with col_btn1:
+            st.download_button(
+                label="📄 Unduh Laporan Resmi (PDF Ber-Kop HRD)",
+                data=pdf_bytes,
+                file_name=f"Laporan_Asesmen_{safe_name}.pdf",
+                mime="application/pdf",
+                use_container_width=True
+            )
+        with col_btn2:
+            st.download_button(
+                label="📝 Unduh Naskah Laporan (Markdown / Text)",
+                data=full_md_report["markdown_report"],
+                file_name=f"Laporan_Asesmen_{safe_name}.md",
+                mime="text/markdown",
+                use_container_width=True
+            )
+
+        with st.expander("👀 Pratinjau Teks Laporan Asesmen", expanded=False):
+            st.markdown(full_md_report["markdown_report"])
+
 
